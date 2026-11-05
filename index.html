@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>다산마리동물병원 - 반려견 종합 건강검진 사전 문진표</title>
+    <title>다산마리동물병원 - 반려동물 종합 건강검진 사전 문진표</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -102,31 +102,92 @@
     <!-- 상단 헤더 & 네비게이션 -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print shadow-sm">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="confirmReset()">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="backToSpeciesSelect()">
                 <div class="w-10 h-10 rounded-xl bg-mari-mint flex items-center justify-center text-white shadow-sm">
-                    <i class="fa-solid fa-shield-dog text-xl"></i>
+                    <i id="headerAnimalIcon" class="fa-solid fa-paw text-xl"></i>
                 </div>
                 <div>
                     <span class="text-xs font-bold tracking-wider text-mari-mint uppercase block">Dasan Mari Animal Hospital</span>
                     <h1 class="text-base sm:text-lg font-bold text-mari-navy leading-tight">다산마리동물병원 건강검진 문진표</h1>
                 </div>
             </div>
-            <!-- 보호자 전용 화면으로 상단 테스트/안내 버튼 제거 완료 -->
+            <!-- 종 변경 버튼 (문진 작성 중에만 표시) -->
+            <button type="button" id="changeSpeciesBtn" onclick="backToSpeciesSelect()" class="hidden px-3 py-1.5 rounded-xl bg-mari-mintLight border border-mari-mintBorder text-mari-navy hover:bg-amber-100/60 text-xs font-bold transition items-center gap-1.5">
+                <i class="fa-solid fa-repeat text-mari-mint"></i> <span id="currentSpeciesBadge">강아지</span> 변경
+            </button>
         </div>
     </header>
 
     <!-- 메인 컨텐츠 영역 -->
     <main class="flex-grow max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+        <!-- ================= 0. 첫 화면: 강아지 / 고양이 선택 뷰 ================= -->
+        <div id="speciesSelectView" class="step-section space-y-6 py-2">
+            <div class="bg-gradient-to-br from-[#5A402C] to-[#3B281A] rounded-3xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden text-center">
+                <div class="relative z-10 max-w-xl mx-auto space-y-3">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-200/15 border border-amber-200/30 text-amber-200 text-xs font-semibold">
+                        <i class="fa-solid fa-stethoscope"></i> 다산마리동물병원 사전 문진 시스템
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">건강검진을 예약해주셔서 감사합니다</h2>
+                    <p class="text-amber-100/90 text-xs sm:text-sm leading-relaxed">
+                        우리 아이 건강에 대한 종합 평가를 위하여 문진표가 진행됩니다
+                    </p>
+                </div>
+                <i class="fa-solid fa-paw text-9xl text-white/5 absolute -right-4 -bottom-4 transform -rotate-12"></i>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <!-- 강아지 선택 카드 -->
+                <button type="button" onclick="selectSpecies('dog')" class="group bg-white hover:bg-mari-mintLight rounded-3xl p-6 sm:p-8 border-2 border-slate-200 hover:border-mari-mint shadow-sm hover:shadow-md transition-all text-left flex flex-col justify-between relative overflow-hidden">
+                    <div class="space-y-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-mari-mintLight group-hover:bg-mari-mint text-mari-mint group-hover:text-white flex items-center justify-center text-3xl transition-colors shadow-sm border border-mari-mintBorder">
+                            <i class="fa-solid fa-dog"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-mari-mint uppercase tracking-wider">Canine Checkup</span>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-mari-navy mt-1">강아지 건강검진 문진표</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
+                                산책 습관, 심장/호흡기(거위소리 기침), 슬개골/관절, 반려견 인지기능장애(CCDR) 등 강아지 맞춤 문진
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-mari-mint relative z-10">
+                        <span>강아지 문진표 작성 시작하기</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </button>
+
+                <!-- 고양이 선택 카드 -->
+                <button type="button" onclick="selectSpecies('cat')" class="group bg-white hover:bg-mari-mintLight rounded-3xl p-6 sm:p-8 border-2 border-slate-200 hover:border-mari-mint shadow-sm hover:shadow-md transition-all text-left flex flex-col justify-between relative overflow-hidden">
+                    <div class="space-y-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-mari-mintLight group-hover:bg-mari-mint text-mari-mint group-hover:text-white flex items-center justify-center text-3xl transition-colors shadow-sm border border-mari-mintBorder">
+                            <i class="fa-solid fa-cat"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-mari-mint uppercase tracking-wider">Feline Checkup</span>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-mari-navy mt-1">고양이 건강검진 문진표</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
+                                음수량/신장(CKD), 화장실 배뇨곤란(방광염/FLUTD), 헤어볼/구토, 구내염(FORL), 묘종 맞춤 문진
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-mari-mint relative z-10">
+                        <span>고양이 문진표 작성 시작하기</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
         
         <!-- 문진표 작성 뷰 -->
-        <div id="formView">
+        <div id="formView" class="hidden">
             <!-- 상단 환영 배너 (따뜻한 에스프레소 브라운 그라데이션) -->
             <div class="bg-gradient-to-br from-[#5A402C] to-[#3B281A] rounded-2xl p-5 sm:p-6 text-white mb-6 shadow-md relative overflow-hidden">
                 <div class="relative z-10">
                     <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-200/15 border border-amber-200/30 text-amber-200 text-xs font-semibold mb-2">
-                        <i class="fa-solid fa-stethoscope"></i> 반려동물 맞춤형 정밀 건강검진
+                        <i id="bannerSpeciesIcon" class="fa-solid fa-dog"></i> <span id="bannerSpeciesTag">반려견 맞춤형 정밀 건강검진</span>
                     </div>
-                    <h2 class="text-xl sm:text-2xl font-bold mb-2">우리 아이의 건강 상태를 알려주세요</h2>
+                    <h2 id="bannerMainTitle" class="text-xl sm:text-2xl font-bold mb-2">우리 아이의 건강 상태를 알려주세요</h2>
                     <p class="text-amber-100/90 text-xs sm:text-sm leading-relaxed">
                         작성해주신 사전 문진표는 다산마리동물병원 수의사가 아이의 평소 생활습관과 미세한 증상을 파악하여 <strong>가장 정확하고 안전한 건강검진</strong>을 진행하는 데 소중한 자료로 활용됩니다.
                     </p>
@@ -138,19 +199,20 @@
             <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm mb-6">
                 <div class="flex justify-between items-center mb-2">
                     <span id="stepCategoryTitle" class="text-sm font-bold text-mari-mint">Step 1. 기본 정보</span>
-                    <span id="stepCounterText" class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">1 / 6 단계</span>
+                    <span id="stepCounterText" class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">1 / 7 단계</span>
                 </div>
                 <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                    <div id="progressBar" class="bg-mari-mint h-full rounded-full transition-all duration-300" style="width: 16.66%"></div>
+                    <div id="progressBar" class="bg-mari-mint h-full rounded-full transition-all duration-300" style="width: 14.28%"></div>
                 </div>
                 <!-- 단계 탭 버튼 (자유 이동 가능) -->
-                <div class="grid grid-cols-6 gap-1 mt-3 pt-3 border-t border-slate-100 text-center">
-                    <button type="button" onclick="jumpToStep(1)" class="step-tab text-xs py-1 rounded font-semibold text-mari-mint bg-mari-mintLight">1. 기본정보</button>
-                    <button type="button" onclick="jumpToStep(2)" class="step-tab text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">2. 식이/배변</button>
-                    <button type="button" onclick="jumpToStep(3)" class="step-tab text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">3. 예방/병력</button>
-                    <button type="button" onclick="jumpToStep(4)" class="step-tab text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">4. 이상증상</button>
-                    <button type="button" onclick="jumpToStep(5)" class="step-tab text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">5. 인지/행동</button>
-                    <button type="button" onclick="jumpToStep(6)" class="step-tab text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">6. 기타</button>
+                <div class="grid grid-cols-7 gap-1 mt-3 pt-3 border-t border-slate-100 text-center">
+                    <button type="button" onclick="jumpToStep(1)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-semibold text-mari-mint bg-mari-mintLight">1. 기본정보</button>
+                    <button type="button" onclick="jumpToStep(2)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">2. 식이/배변</button>
+                    <button type="button" onclick="jumpToStep(3)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">3. 예방/병력</button>
+                    <button type="button" onclick="jumpToStep(4)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">4. 이상증상</button>
+                    <button type="button" onclick="jumpToStep(5)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">5. 인지/행동</button>
+                    <button type="button" onclick="jumpToStep(6)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">6. 안내사항</button>
+                    <button type="button" onclick="jumpToStep(7)" class="step-tab text-[11px] sm:text-xs py-1 rounded font-medium text-slate-400 hover:text-slate-600">7. 기타</button>
                 </div>
             </div>
 
@@ -383,7 +445,7 @@
                                 </div>
                             </label>
                             <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="stoolUrine" value="변비 경향 / 배변 시 힘들어함" onchange="uncheckNormalStool()" class="sr-only">
+                                <input type="checkbox" name="stoolUrine" value="변비 경향 / 토끼똥 같은 딱딱한 변" onchange="uncheckNormalStool()" class="sr-only">
                                 <div class="p-3 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
                                     <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-exclamation"></i></span>
                                     <span>변이 딱딱하거나 변비 경향이 있음</span>
@@ -397,17 +459,17 @@
                                 </div>
                             </label>
                             <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="stoolUrine" value="소변량 및 횟수 급증 (다뇨)" onchange="uncheckNormalStool()" class="sr-only">
+                                <input type="checkbox" name="stoolUrine" value="소변량 및 횟수 급증 (다뇨 / 감자 크기 커짐)" onchange="uncheckNormalStool()" class="sr-only">
                                 <div class="p-3 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
                                     <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-exclamation"></i></span>
                                     <span>소변 보는 양이나 횟수가 크게 늘었음</span>
                                 </div>
                             </label>
                             <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="stoolUrine" value="혈뇨 / 빈뇨 / 배뇨 곤란(자세만 잡음)" onchange="uncheckNormalStool()" class="sr-only">
+                                <input type="checkbox" name="stoolUrine" value="혈뇨 / 빈뇨 / 배뇨 곤란(화장실만 들락거림)" onchange="uncheckNormalStool()" class="sr-only">
                                 <div class="p-3 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
                                     <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-exclamation"></i></span>
-                                    <span>붉은 소변(혈뇨) 또는 소변 볼 때 힘들어함</span>
+                                    <span>혈뇨 / 소변 볼 때 힘들어하거나 자주 들락거림</span>
                                 </div>
                             </label>
                             <label class="check-card cursor-pointer sm:col-span-2">
@@ -423,15 +485,11 @@
                         </div>
                     </div>
 
-                    <!-- 7. 산책 및 활동량 (기타 포함) -->
+                    <!-- 7. 산책/활동량 (강아지) 또는 실내 환경/활동성 (고양이) -->
                     <div class="pt-2 border-t border-slate-100">
-                        <label class="block text-sm font-bold text-slate-700 mb-1.5">7. 평균 산책 횟수 및 활동량</label>
+                        <label id="walkActivityLabel" class="block text-sm font-bold text-slate-700 mb-1.5">7. 평균 산책 횟수 및 활동량</label>
                         <select id="walkActivity" onchange="toggleSelectOther('walkActivity', 'walkOtherWrap')" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm bg-white">
-                            <option value="매일 1~2회 이상 규칙적 산책">매일 1~2회 이상 규칙적으로 산책함</option>
-                            <option value="주 3~4회 정도 산책" selected>주 3~4회 정도 산책함</option>
-                            <option value="주 1~2회 이하 (실내 활동 위주)">주 1~2회 이하 (대부분 실내 생활)</option>
-                            <option value="최근 산책을 거부하거나 금방 안아달라고 함">최근 걷기 싫어하거나 산책 중 자주 멈춤 (주의)</option>
-                            <option value="기타">기타 (직접 입력)</option>
+                            <!-- 종 선택에 따라 옵션 동적 변경 -->
                         </select>
                         <div id="walkOtherWrap" class="hidden mt-2">
                             <input type="text" id="walkOtherText" placeholder="산책 습관이나 활동량 변화를 직접 입력해주세요" class="w-full px-4 py-2.5 rounded-xl border border-mari-mint bg-mari-mintLight/30 text-sm outline-none">
@@ -451,7 +509,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">1. 정기 예방접종 (종합/코로나/켄넬/플루 등)</label>
+                            <label id="vaxLabel" class="block text-sm font-bold text-slate-700 mb-1.5">1. 정기 예방접종 (종합/코로나/켄넬/플루 등)</label>
                             <select id="vaccinationStatus" onchange="toggleSelectOther('vaccinationStatus', 'vaxOtherWrap')" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm bg-white">
                                 <option value="매년 정기적으로 추가접종 완료">매년 정기적으로 접종 중 (또는 항체가 확인)</option>
                                 <option value="어릴 때 기초접종만 완료 (최근 미접종)">어릴 때만 맞추고 최근 1~2년간 미접종</option>
@@ -467,12 +525,12 @@
                             <select id="heartwormStatus" onchange="toggleSelectOther('heartwormStatus', 'heartwormOtherWrap')" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm bg-white">
                                 <option value="매월 규칙적으로 예방 중">매달 규칙적으로 예방 중</option>
                                 <option value="계절(봄~가을)에만 간헐적 예방">봄~가을에만 간헐적으로 예방함</option>
-                                <option value="현재 예방하지 않고 있음 (사상충 검사 필수)">현재 예방하지 않고 있음 (주의)</option>
+                                <option value="현재 예방하지 않고 있음">현재 예방하지 않고 있음 (주의)</option>
                                 <option value="잘 모르겠음">잘 모르겠음</option>
                                 <option value="기타">기타 (사용 제품명 등 직접 입력)</option>
                             </select>
                             <div id="heartwormOtherWrap" class="hidden mt-2">
-                                <input type="text" id="heartwormOtherText" placeholder="예: 하트가드/네스가드 스펙트라 급여 등 직접 입력" class="w-full px-3.5 py-2.5 rounded-xl border border-mari-mint bg-mari-mintLight text-sm outline-none">
+                                <input type="text" id="heartwormOtherText" placeholder="사용 중인 예방약 이름 등을 직접 입력해주세요" class="w-full px-3.5 py-2.5 rounded-xl border border-mari-mint bg-mari-mintLight text-sm outline-none">
                             </div>
                         </div>
                         <div>
@@ -490,10 +548,10 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">4. 외부 기생충(진드기·벼룩 등) 예방 여부</label>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">4. 외부 기생충(진드기·벼룩·귀진드기 등) 예방 여부</label>
                             <select id="externalParasiteStatus" onchange="toggleSelectOther('externalParasiteStatus', 'externalPOtherWrap')" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm bg-white">
                                 <option value="매월 규칙적으로 예방 중">매달 규칙적으로 예방 중</option>
-                                <option value="산책 철(봄~가을)에만 간헐적 예방">산책 철(봄~가을)에만 간헐적으로 예방함</option>
+                                <option value="계절(봄~가을)에만 간헐적 예방">봄~가을에만 간헐적으로 예방함</option>
                                 <option value="현재 예방하지 않고 있음">현재 예방하지 않고 있음</option>
                                 <option value="잘 모르겠음">잘 모르겠음</option>
                                 <option value="기타">기타 (직접 입력)</option>
@@ -504,82 +562,20 @@
                         </div>
                     </div>
 
-                    <!-- 과거 주요 질환/수술 이력 -->
+                    <!-- 과거 주요 질환/수술 이력 (종별 동적 렌더링) -->
                     <div class="pt-2 border-t border-slate-100">
                         <label class="block text-sm font-bold text-slate-700 mb-2">5. 과거 진단받았거나 수술받은 이력 (해당 항목 모두 선택)</label>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-3">
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="슬개골 탈구 / 관절 질환" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>슬개골 탈구 / 관절염</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="심장 질환 (심잡음/판막질환)" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>심장 질환 / 심잡음</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="신장 / 방광 결석 / 방광염" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>신장질환 / 결석 / 방광염</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="간 수치 상승 / 담낭 슬러지" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>간 질환 / 담낭 슬러지</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="췌장염 / 만성 소화기 질환" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>췌장염 / 만성 장염</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="피부병 / 만성 외이염" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>만성 피부병 / 외이염</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="호르몬 질환 (쿠싱/갑상선/당뇨)" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>쿠싱 / 갑상선 / 당뇨</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="치과 수술 / 스케일링 이력" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>스케일링 / 발치 수술</span>
-                                </div>
-                            </label>
-                            <label class="check-card cursor-pointer">
-                                <input type="checkbox" name="pastHistory" value="종양 (유선종양/피부종괴 등)" class="sr-only">
-                                <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>유선종양 / 피부 혹</span>
-                                </div>
-                            </label>
+                        <div id="pastHistoryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-3">
+                            <!-- 강아지/고양이 맞춤 병력 체크박스가 JS로 렌더링됨 -->
                         </div>
-                        <input type="text" id="pastHistoryDetail" placeholder="기타 과거에 앓았던 질환이나 수술 이력이 있다면 적어주세요 (예: 2년 전 슬개골 수술)" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm">
+                        <input type="text" id="pastHistoryDetail" placeholder="기타 과거에 앓았던 질환이나 수술 이력이 있다면 적어주세요" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm">
                     </div>
 
                     <!-- 현재 복용 중인 약물 및 영양제 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1.5">현재 복용 중인 처방약 / 영양제</label>
-                            <input type="text" id="currentMeds" placeholder="예: 심장약 복용 중, 유산균, 오메가3, 관절영양제 등" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm">
+                            <input type="text" id="currentMeds" placeholder="예: 심장약/신장보조제 복용 중, 유산균, 오메가3 등" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mari-mint outline-none text-sm">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1.5">약물 / 백신 부작용 또는 음식 알러지</label>
@@ -598,173 +594,28 @@
                         <p class="text-xs text-slate-500 mt-1">최근 1~3개월 사이 보호자님께서 느끼신 이상 증상이 있다면 모두 선택해주세요. (해당 사항이 없으면 선택하지 않고 다음으로 넘어가시면 됩니다)</p>
                     </div>
 
-                    <!-- 1. 안과 / 귀 -->
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-eye text-mari-mint"></i> 눈 (안과) 및 귀 (이과) 증상
-                        </h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symEyeEar" value="눈물량/눈곱 증가 또는 충혈" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>눈물·눈곱이 부쩍 늘거나 눈이 충혈됨</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symEyeEar" value="눈동자 혼탁/백탁 (백내장/핵경화 의심)" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>눈동자가 하얗거나 뿌옇게 보임 (백탁)</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symEyeEar" value="어두운 곳에서 장애물에 부딪힘 (시력저하)" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>밤이나 어두운 곳에서 사물에 부딪힘</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symEyeEar" value="귀를 자주 긁거나 털고 귀지/악취가 남" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>귀를 자주 긁거나 머리를 털고 귀지가 많음</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 2. 구강 / 소화기 -->
-                    <div class="pt-3 border-t border-slate-100">
-                        <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-tooth text-mari-mint"></i> 구강 (치아) 및 소화기 증상
-                        </h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symOralGi" value="심한 구취 / 치석 / 잇몸 출혈" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>입냄새가 심하거나 치석·잇몸 붓기가 있음</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symOralGi" value="딱딱한 것을 씹기 힘들어하거나 침을 흘림" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>사료 씹기를 힘들어하거나 한쪽으로만 씹음</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symOralGi" value="잦은 구토 (공복토/사료토) 또는 역류" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>노란 공복토나 사료 구토를 종종 함</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symOralGi" value="트림/방귀가 잦거나 배에서 꼬르륵 소리가 남" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>배에서 물소리가 자주 나거나 구역질을 함</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 3. 호흡기 / 순환기(심장) -->
-                    <div class="pt-3 border-t border-slate-100">
-                        <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-heart-pulse text-mari-mint"></i> 호흡기 및 심장(순환기) 증상
-                        </h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symCardioResp" value="거위 소리 같은 기침(기관허탈) 또는 마른 기침" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>흥분할 때 '컥컥' 거위 소리 같은 기침을 함</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symCardioResp" value="안정 시/수면 중 호흡수가 빠르거나 숨을 헐떡임" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>가만히 쉴 때도 숨을 헐떡이거나 호흡이 빠름</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symCardioResp" value="산책 시 쉽게 지치고 혀가 보라색(청색증)으로 변함" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>조금만 걸어도 쉽게 지치거나 혀가 푸르스름해짐</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symCardioResp" value="실신(기절)하거나 비틀거린 적이 있음" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>흥분 후 갑자기 주저앉거나 실신한 적이 있음</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 4. 피부 / 근골격 / 신경계 -->
-                    <div class="pt-3 border-t border-slate-100">
-                        <h4 class="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-bone text-mari-mint"></i> 피부 · 종괴(혹) · 관절/보행 증상
-                        </h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symSkinJoint" value="발바닥을 계속 핥거나 몸을 자주 긁음/탈모" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>발을 계속 핥거나 가려움·각질·탈모가 있음</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symSkinJoint" value="피부나 유선 주변에 만져지는 혹(종괴/사마귀)이 있음" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>몸이나 배(유선)에 만져지는 혹이나 멍울이 있음</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symSkinJoint" value="특정 다리를 절거나(파행) 깨금발을 듦" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>걸을 때 다리를 절거나 들고 뛰는 모습(깨금발)</span>
-                                </div>
-                            </label>
-                            <label class="symptom-card cursor-pointer">
-                                <input type="checkbox" name="symSkinJoint" value="소파/계단 오르내리기를 주저하거나 허리 통증" class="sr-only">
-                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
-                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>
-                                    <span>자고 일어날 때 뻣뻣해하거나 안을 때 아파함</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
+                    <!-- 강아지/고양이별 기관별 증상 동적 컨테이너 -->
+                    <div id="symptomSectionsContainer" class="space-y-5"></div>
                 </section>
 
-                <!-- ================= STEP 5: 반려견 인지기능장애 척도 설문지 (CCDR) ================= -->
+                <!-- ================= STEP 5: 인지기능장애 척도 설문지 (CCDR / 노령묘 행동변화) ================= -->
                 <section id="step-5" class="step-section hidden bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-sm space-y-6">
                     <div class="border-b border-slate-100 pb-4">
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <h3 class="text-lg font-bold text-mari-navy flex items-center gap-2">
                                 <span class="w-7 h-7 rounded-lg bg-mari-mintLight text-mari-mint flex items-center justify-center text-sm">5</span>
-                                반려견 인지기능장애 척도 설문지 (CCDR)
+                                <span id="step5MainTitle">반려견 인지기능장애 척도 설문지 (CCDR)</span>
                             </h3>
                             <button type="button" onclick="resetCcdrToNormal()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-mari-mintLight hover:bg-amber-100/70 text-mari-mint border border-mari-mintBorder transition flex items-center gap-1.5">
                                 <i class="fa-solid fa-check-double"></i> 전 문항 '정상(해당없음/이전과 같음)' 기본값 세팅
                             </button>
                         </div>
-                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                            반려견 인지기능장애 척도(Canine Cognitive Dysfunction Rating scale, CCDR) 공식 설문지입니다. 각 문항을 읽고 해당되는 점수에 체크해주세요. <span class="text-mari-mint font-semibold">(어린 반려견이거나 이상 증상이 전혀 없다면 우측 상단 기본값 버튼을 누른 뒤 다음 단계로 넘어가셔도 됩니다.)</span>
+                        <p id="step5DescText" class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            인지기능장애 척도(CCDR) 설문지입니다. 각 문항을 읽고 해당되는 점수에 체크해주세요. <span class="text-mari-mint font-semibold">(어린 아이이거나 이상 증상이 전혀 없다면 우측 상단 기본값 버튼을 누른 뒤 다음 단계로 넘어가셔도 됩니다.)</span>
                         </p>
                     </div>
 
-                    <!-- 실시간 CCDR 점수 계산 및 판정 배너 -->
+                    <!-- 실시간 CCDR/FCDS 점수 계산 및 판정 배너 -->
                     <div id="ccdrScoreBanner" class="sticky top-16 z-20 rounded-2xl p-4 bg-mari-navy text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-amber-900/50">
                         <div class="flex items-center gap-3">
                             <div class="w-11 h-11 rounded-xl bg-amber-100/15 border border-amber-200/30 flex items-center justify-center text-amber-200 font-extrabold text-lg" id="ccdrTotalScoreBadge">
@@ -772,53 +623,187 @@
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs text-amber-100/80 font-medium">CCDR 실시간 총점:</span>
+                                    <span id="ccdrScaleLabelText" class="text-xs text-amber-100/80 font-medium">CCDR 실시간 총점:</span>
                                     <span id="ccdrStatusBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-200/20 text-amber-200 border border-amber-200/30">정상 (39점 이하)</span>
                                 </div>
-                                <p class="text-[11px] text-amber-100/70 mt-0.5">판정 기준: <strong>39점 이하</strong> 정상 &nbsp;|&nbsp; <strong>40~49점</strong> 인지기능장애 위험군 &nbsp;|&nbsp; <strong>50점 이상</strong> 인지기능장애 증후군</p>
+                                <p id="ccdrCriteriaText" class="text-[11px] text-amber-100/70 mt-0.5">판정 기준: <strong>39점 이하</strong> 정상 &nbsp;|&nbsp; <strong>40~49점</strong> 인지기능장애 위험군 &nbsp;|&nbsp; <strong>50점 이상</strong> 인지기능장애 증후군</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- CCDR 문항 컨테이너 (JavaScript로 13문항 렌더링) -->
+                    <!-- CCDR / FCDS 문항 컨테이너 (JavaScript로 종별 동적 렌더링) -->
                     <div id="ccdrQuestionsContainer" class="space-y-6"></div>
 
-                    <div class="text-[11px] text-slate-400 bg-slate-50 p-3.5 rounded-xl border border-slate-200/70">
+                    <div id="ccdrFootnoteText" class="text-[11px] text-slate-400 bg-slate-50 p-3.5 rounded-xl border border-slate-200/70">
                         * 출처: Salvin HE et al. The canine cognitive dysfunction rating scale (CCDR): a data-driven and ecologically relevant assessment tool. <em>Vet J</em> 2011; 188(3): 331-336. (제다큐어 츄어블정 / 유한양행 임상 평가 기준)
                     </div>
                 </section>
 
-                <!-- ================= STEP 6: 기타 ================= -->
+                <!-- ================= STEP 6: 안내사항 ================= -->
                 <section id="step-6" class="step-section hidden bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-sm space-y-6">
                     <div class="border-b border-slate-100 pb-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <h3 class="text-lg font-bold text-mari-navy flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-mari-mintLight text-mari-mint flex items-center justify-center text-sm">6</span>
+                                안내사항
+                            </h3>
+                            <span id="noticeCheckCounter" class="text-xs font-extrabold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                                0 / 11개 확인됨
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                            안전하고 정확한 건강검진을 위해 아래 안내사항을 <strong>한 문장씩 읽고 모두 체크</strong>해주셔야 다음 단계로 진행이 가능합니다.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2.5" id="noticeChecklistContainer">
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>정확한 혈액검사 및 복부초음파 결과를 위해 <strong>내원 최소 8~12시간 전부터 금식(사료 및 간식 중단)</strong>을 해주세요.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>물(음수)은 내원 전까지급여하셔도 괜찮습니다. (단, 스케일링 등 마취가 예정된 진료가 함께 있다면 3시간 금수입니다.)</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>복부 초음파(방광 정밀 확인)를 위해 <strong>내원 직전 2~3시간 동안은 소변을 보지 않고(소변을 참은 상태로)</strong> 방문해주시면 가장 좋습니다.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>정확한 복부 초음파 검사를 위하여 배털을 밀어야 (클리핑) 하는 점 참고 부탁드립니다.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>피부에 있는 작은 결절이나 종괴는 털에 가려서 촉진 시 놓칠 수 있습니다. 집에서 평소에 만져져서 신경 쓰였던 피부 결절이 있다면 기타란에 작성하시거나 내원 시 말씀해주세요.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>갑작스럽게 발병하는 급성 질환이나, 내시경, CT나 MRI 와 같은 상위 검사가 필요한 뇌척수 질환 등은 건강검진에서 검출이 불가합니다.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>예민한 아이는 내원 전 스트레스 완화제를 미리 처방 받아 가셔서 복용하고 오시는게 도움이 될 수 있습니다. (필요 시 미리 연락주세요)</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>상황에 따라서는 넥칼라 착용 후 진행될 수 있으며 담요에 발톱이 걸리는 걸 방지하기 위하여 발톱을 깎을 수 있습니다.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>채혈은 앞발 혈관을 아끼기 위하여 대개 목에서 진행하나, 고개를 들고 있는 걸 많이 싫어하거나 털/피하 지방 등에 의해 혈관이 잘 촉진 되지 않는 경우 앞발에서 채혈이 진행됩니다.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>소변검사는 제출 전날 혹은 당일 소변만 가능하며 (내원 전까지 냉장보관 필수) 검진 예약 당일 기준 일주일 전후로 제출이 가능합니다.</span>
+                            </div>
+                        </label>
+
+                        <label class="check-card cursor-pointer block">
+                            <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
+                            <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
+                                <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
+                                <span>건강검진 결과지는 검사일 기준 일주일 이내 작성해주신 이메일로 보내드립니다.</span>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- ================= STEP 7: 기타 ================= -->
+                <section id="step-7" class="step-section hidden bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-sm space-y-6">
+                    <div class="border-b border-slate-100 pb-4">
                         <h3 class="text-lg font-bold text-mari-navy flex items-center gap-2">
-                            <span class="w-7 h-7 rounded-lg bg-mari-mintLight text-mari-mint flex items-center justify-center text-sm">6</span>
+                            <span class="w-7 h-7 rounded-lg bg-mari-mintLight text-mari-mint flex items-center justify-center text-sm">7</span>
                             기타
                         </h3>
-                        <p class="text-xs text-slate-500 mt-1">마지막 단계입니다! 담당 수의사에게 미리 전달하고 싶은 사항을 자유롭게 작성해주세요.</p>
+                        <p class="text-xs text-slate-500 mt-1">마지막 단계입니다! 다음 건강검진 주기 알람 신청 여부와 담당 수의사에게 미리 전달하고 싶은 말씀을 작성해주세요.</p>
                     </div>
 
-                    <!-- 담당 수의사에게 미리 전하고 싶은 말씀 -->
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">담당 수의사에게 미리 전하고 싶은 말씀</label>
-                        <textarea id="vetMemo" rows="5" placeholder="예: 병원 가면 많이 긴장해서 조금 입질이 있을 수 있어요 / 왼쪽 뒷다리를 자꾸 핥는데 진찰 시 확인 부탁드려요 / 채혈할 때 목보다는 다리에서 하는 걸 덜 무서워해요 / 평소 궁금했던 점 등 자유롭게 적어주세요." class="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:border-mari-mint focus:ring-2 focus:ring-mari-mint/20 outline-none transition text-sm leading-relaxed"></textarea>
+                    <!-- 1. 다음 건강검진 알람 신청 여부 -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700">
+                                1. 추후 건강검진 시기 도래 시 안내 알람을 받으시겠어요? <span class="text-rose-500">*</span>
+                            </label>
+                            <p class="text-xs text-slate-500 mt-0.5">선택해주신 주기에 맞춰 우리 아이의 다음 건강검진 시기를 놓치지 않도록 안내해드립니다.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <label class="check-card cursor-pointer">
+                                <input type="radio" name="checkupReminder" value="6개월 간격으로 알람 신청" onchange="toggleRadioOther('checkupReminder', 'reminderOtherWrap')" class="sr-only">
+                                <div class="p-3.5 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
+                                    <span class="check-icon w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                                    <span>6개월 간격</span>
+                                </div>
+                            </label>
+                            <label class="check-card cursor-pointer">
+                                <input type="radio" name="checkupReminder" value="1년 간격으로 알람 신청" checked onchange="toggleRadioOther('checkupReminder', 'reminderOtherWrap')" class="sr-only">
+                                <div class="p-3.5 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
+                                    <span class="check-icon w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                                    <span>1년 간격</span>
+                                </div>
+                            </label>
+                            <label class="check-card cursor-pointer">
+                                <input type="radio" name="checkupReminder" value="원치 않음" onchange="toggleRadioOther('checkupReminder', 'reminderOtherWrap')" class="sr-only">
+                                <div class="p-3.5 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
+                                    <span class="check-icon w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                                    <span>원치 않음</span>
+                                </div>
+                            </label>
+                            <label class="check-card cursor-pointer">
+                                <input type="radio" name="checkupReminder" value="기타" onchange="toggleRadioOther('checkupReminder', 'reminderOtherWrap')" class="sr-only">
+                                <div class="p-3.5 rounded-xl border border-slate-200 text-sm font-medium flex items-center gap-2.5 transition">
+                                    <span class="check-icon w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-pen"></i></span>
+                                    <span>기타 (직접 입력)</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div id="reminderOtherWrap" class="hidden mt-2">
+                            <input type="text" id="reminderOtherText" placeholder="원하시는 건강검진 알람 주기나 시기를 직접 입력해주세요 (예: 3개월 뒤 재검, 내년 봄 등)" class="w-full px-4 py-2.5 rounded-xl border border-mari-mint bg-mari-mintLight text-sm outline-none">
+                        </div>
                     </div>
 
-                    <!-- 검진 전 금식 및 주의사항 확인 박스 -->
-                    <div class="bg-amber-50/90 border border-amber-200 rounded-2xl p-4 sm:p-5 space-y-3">
-                        <h4 class="text-sm font-bold text-amber-900 flex items-center gap-2">
-                            <i class="fa-solid fa-circle-info text-amber-600"></i> 다산마리동물병원 건강검진 전 필수 안내사항
-                        </h4>
-                        <ul class="text-xs text-amber-800 space-y-1.5 list-disc list-inside leading-relaxed">
-                            <li>정확한 혈액검사 및 복부초음파 결과를 위해 <strong>내원 최소 8~12시간 전부터 금식(사료 및 간식 중단)</strong>을 해주세요.</li>
-                            <li><strong>물(음수)은 내원 2~3시간 전까지</strong> 소량 급여하셔도 괜찮습니다. (단, 마취/진정이 예정된 경우 별도 안내를 따라주세요.)</li>
-                            <li>복부 초음파(방광 정밀 확인)를 위해 <strong>내원 직전 2~3시간 동안은 소변을 보지 않고(소변을 참은 상태로)</strong> 방문해주시면 가장 좋습니다.</li>
-                            <li>정확한 복부 초음파 검사를 위하여 배털을 밀어야 (클리핑) 하는 점 참고 부탁드립니다.</li>
-                        </ul>
-                        <label class="flex items-center gap-3 pt-2 border-t border-amber-200/70 cursor-pointer">
-                            <input type="checkbox" id="fastingConfirm" required class="w-5 h-5 rounded text-mari-mint focus:ring-mari-mint border-amber-400">
-                            <span class="text-xs sm:text-sm font-bold text-amber-950">네, 위 검진 전 금식 및 복부 초음파 배털 미는 안내를 확인하였습니다. <span class="text-rose-500">*</span></span>
-                        </label>
+                    <!-- 2. 담당 수의사에게 미리 전하고 싶은 말씀 -->
+                    <div class="pt-4 border-t border-slate-100">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">2. 담당 수의사에게 미리 전하고 싶은 말씀</label>
+                        <textarea id="vetMemo" rows="6" placeholder="예: 병원 가면 많이 긴장해서 조금 입질이 있을 수 있어요 / 왼쪽 뒷다리를 자꾸 핥는데 진찰 시 확인 부탁드려요 / 집에서 만져지는 작은 피부 결절 위치 / 평소 궁금했던 점 등 자유롭게 적어주세요." class="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:border-mari-mint focus:ring-2 focus:ring-mari-mint/20 outline-none transition text-sm leading-relaxed"></textarea>
                     </div>
                 </section>
 
@@ -886,6 +871,8 @@
                         <div>
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-bold text-mari-mint">다산마리동물병원</span>
+                                <span class="text-slate-300">|</span>
+                                <span id="repSpeciesTag" class="text-xs font-bold px-2 py-0.5 rounded bg-mari-mintLight text-mari-mint border border-mari-mintBorder">강아지</span>
                                 <span class="text-slate-300">|</span>
                                 <span id="reportTimestamp" class="text-xs text-slate-500">작성일: -</span>
                             </div>
@@ -1001,11 +988,11 @@
                         </div>
                     </div>
 
-                    <!-- 4. 반려견 인지기능장애 척도 (CCDR) 결과 요약 -->
+                    <!-- 4. 반려동물 인지기능장애 척도 (CCDR / FCDS) 결과 요약 -->
                     <div class="p-4 sm:p-5 rounded-xl border border-slate-200 space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                             <h4 class="text-sm font-bold text-mari-navy flex items-center gap-2">
-                                <i class="fa-solid fa-brain text-mari-mint"></i> 반려견 인지기능장애 척도 (CCDR) 평가 결과
+                                <i class="fa-solid fa-brain text-mari-mint"></i> <span id="repCcdrSectionTitle">반려견 인지기능장애 척도 (CCDR) 평가 결과</span>
                             </h4>
                             <div id="repCcdrResultBadge" class="inline-flex items-center gap-2"></div>
                         </div>
@@ -1015,11 +1002,16 @@
                     </div>
 
                     <!-- 5. 담당 수의사에게 전하는 말씀 (기타) -->
-                    <div class="p-4 rounded-xl bg-mari-mintLight/60 border border-mari-mintBorder/60">
-                        <h4 class="text-xs font-bold text-mari-mint uppercase mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-comment-medical"></i> 담당 수의사에게 미리 전하고 싶은 말씀 (기타)
-                        </h4>
-                        <p id="repMemo" class="text-sm text-slate-800 font-medium whitespace-pre-line">-</p>
+                    <div class="p-4 rounded-xl bg-mari-mintLight/60 border border-mari-mintBorder/60 space-y-2">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-mari-mintBorder/60 pb-2">
+                            <h4 class="text-xs font-bold text-mari-mint uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-comment-medical"></i> 기타 (건강검진 알람 신청 및 수의사 전달사항)
+                            </h4>
+                            <span class="text-xs font-bold text-mari-navy bg-white px-2.5 py-1 rounded-lg border border-mari-mintBorder">
+                                <i class="fa-regular fa-bell text-mari-mint mr-1"></i>검진 알람 신청: <span id="repReminder">-</span>
+                            </span>
+                        </div>
+                        <p id="repMemo" class="text-sm text-slate-800 font-medium whitespace-pre-line pt-1">-</p>
                     </div>
                 </div>
             </div>
@@ -1114,9 +1106,10 @@
     </div>
 
     <script>
-        // 현재 진행 단계 상태 관리
+        // 현재 선택된 종 ('dog' 또는 'cat') 및 진행 단계 상태 관리
+        let selectedSpecies = 'dog';
         let currentStep = 1;
-        const totalSteps = 6;
+        const totalSteps = 7;
         let formattedReportText = "";
         const KAKAO_CHANNEL_CHAT_URL = "https://pf.kakao.com/_QxkpZT/chat";
 
@@ -1125,15 +1118,185 @@
             "Step 2. 생활 습관 및 식이 · 배변 상태",
             "Step 3. 예방 의학 및 과거 병력 · 투약 정보",
             "Step 4. 신체 기관별 이상 증상 체크",
-            "Step 5. 반려견 인지기능장애 척도 설문지 (CCDR)",
-            "Step 6. 기타 (수의사 전달사항)"
+            "Step 5. 인지기능장애 척도 설문지 (CCDR)",
+            "Step 6. 안내사항",
+            "Step 7. 기타"
         ];
 
-        // ================= CCDR 13문항 데이터 정의 (제다큐어 / Salvin HE et al. 2011) =================
-        const ccdrQuestions = [
+        // ================= 종별(강아지 vs 고양이) 맞춤 데이터 설정 =================
+        const speciesConfig = {
+            dog: {
+                name: "강아지",
+                badgeIcon: "fa-dog",
+                bannerTag: "반려견 맞춤형 정밀 건강검진",
+                bannerTitle: "우리 강아지의 건강 상태를 알려주세요",
+                petNamePlaceholder: "예: 보리, 마리, 초코",
+                foodPlaceholder: "예: 로얄캐닌 미니 인도어, 힐스, 하림 더리얼 등",
+                snackPlaceholder: "예: 건조 오리목뼈, 삶은 양배추/브로콜리, 덴탈껌 등",
+                walkLabel: "7. 평균 산책 횟수 및 활동량",
+                walkOptions: [
+                    { value: "매일 1~2회 이상 규칙적 산책", label: "매일 1~2회 이상 규칙적으로 산책함" },
+                    { value: "주 3~4회 정도 산책", label: "주 3~4회 정도 산책함", selected: true },
+                    { value: "주 1~2회 이하 (실내 활동 위주)", label: "주 1~2회 이하 (대부분 실내 생활)" },
+                    { value: "최근 산책을 거부하거나 금방 안아달라고 함", label: "최근 걷기 싫어하거나 산책 중 자주 멈춤 (주의)" },
+                    { value: "기타", label: "기타 (직접 입력)" }
+                ],
+                vaxLabel: "1. 정기 예방접종 (종합백신/코로나/켄넬코프/신종플루/광견병)",
+                pastHistoryItems: [
+                    "슬개골 탈구 / 관절 질환",
+                    "심장 질환 (심잡음/판막질환)",
+                    "신장 / 방광 결석 / 방광염",
+                    "간 수치 상승 / 담낭 슬러지",
+                    "췌장염 / 만성 소화기 질환",
+                    "피부병 / 만성 외이염",
+                    "호르몬 질환 (쿠싱/갑상선/당뇨)",
+                    "치과 수술 / 스케일링 이력",
+                    "종양 (유선종양/피부종괴 등)"
+                ],
+                symptomCategories: [
+                    {
+                        title: "눈 (안과) 및 귀 (이과) 증상",
+                        icon: "fa-eye",
+                        name: "symEyeEar",
+                        items: [
+                            { value: "눈물량/눈곱 증가 또는 충혈", label: "눈물·눈곱이 부쩍 늘거나 눈이 충혈됨" },
+                            { value: "눈동자 혼탁/백탁 (백내장/핵경화 의심)", label: "눈동자가 하얗거나 뿌옇게 보임 (백탁)" },
+                            { value: "어두운 곳에서 장애물에 부딪힘 (시력저하)", label: "밤이나 어두운 곳에서 사물에 부딪힘" },
+                            { value: "귀를 자주 긁거나 털고 귀지/악취가 남", label: "귀를 자주 긁거나 머리를 털고 귀지가 많음" }
+                        ]
+                    },
+                    {
+                        title: "구강 (치아) 및 소화기 증상",
+                        icon: "fa-tooth",
+                        name: "symOralGi",
+                        items: [
+                            { value: "심한 구취 / 치석 / 잇몸 출혈", label: "입냄새가 심하거나 치석·잇몸 붓기가 있음" },
+                            { value: "딱딱한 것을 씹기 힘들어하거나 침을 흘림", label: "사료 씹기를 힘들어하거나 한쪽으로만 씹음" },
+                            { value: "잦은 구토 (공복토/사료토) 또는 역류", label: "노란 공복토나 사료 구토를 종종 함" },
+                            { value: "트림/방귀가 잦거나 배에서 꼬르륵 소리가 남", label: "배에서 물소리가 자주 나거나 구역질을 함" }
+                        ]
+                    },
+                    {
+                        title: "호흡기 및 심장(순환기) 증상",
+                        icon: "fa-heart-pulse",
+                        name: "symCardioResp",
+                        items: [
+                            { value: "거위 소리 같은 기침(기관허탈) 또는 마른 기침", label: "흥분할 때 '컥컥' 거위 소리 같은 기침을 함" },
+                            { value: "안정 시/수면 중 호흡수가 빠르거나 숨을 헐떡임", label: "가만히 쉴 때도 숨을 헐떡이거나 호흡이 빠름" },
+                            { value: "산책 시 쉽게 지치고 혀가 보라색(청색증)으로 변함", label: "조금만 걸어도 쉽게 지치거나 혀가 푸르스름해짐" },
+                            { value: "실신(기절)하거나 비틀거린 적이 있음", label: "흥분 후 갑자기 주저앉거나 실신한 적이 있음" }
+                        ]
+                    },
+                    {
+                        title: "피부 · 종괴(혹) · 관절/보행 증상",
+                        icon: "fa-bone",
+                        name: "symSkinJoint",
+                        items: [
+                            { value: "발바닥을 계속 핥거나 몸을 자주 긁음/탈모", label: "발을 계속 핥거나 가려움·각질·탈모가 있음" },
+                            { value: "피부나 유선 주변에 만져지는 혹(종괴/사마귀)이 있음", label: "몸이나 배(유선)에 만져지는 혹이나 멍울이 있음" },
+                            { value: "특정 다리를 절거나(파행) 깨금발을 듦", label: "걸을 때 다리를 절거나 들고 뛰는 모습(깨금발)" },
+                            { value: "소파/계단 오르내리기를 주저하거나 허리 통증", label: "자고 일어날 때 뻣뻣해하거나 안을 때 아파함" }
+                        ]
+                    }
+                ],
+                step5Title: "반려견 인지기능장애 척도 설문지 (CCDR)",
+                step5Desc: "반려견 인지기능장애 척도(CCDR) 설문지입니다. 각 문항을 읽고 해당되는 점수에 체크해주세요. <span class='text-mari-mint font-semibold'>(어린 강아지이거나 이상 증상이 전혀 없다면 우측 상단 기본값 버튼을 누른 뒤 다음 단계로 넘어가셔도 됩니다.)</span>",
+                scaleLabel: "CCDR 실시간 총점:",
+                criteriaHtml: "판정 기준: <strong>39점 이하</strong> 정상 &nbsp;|&nbsp; <strong>40~49점</strong> 인지기능장애 위험군 &nbsp;|&nbsp; <strong>50점 이상</strong> 인지기능장애 증후군",
+                footnoteHtml: "* 출처: Salvin HE et al. The canine cognitive dysfunction rating scale (CCDR): a data-driven and ecologically relevant assessment tool. <em>Vet J</em> 2011; 188(3): 331-336. (제다큐어 츄어블정 / 유한양행 임상 평가 기준)",
+                reportSectionTitle: "반려견 인지기능장애 척도 (CCDR) 평가 결과",
+                memoPlaceholder: "예: 병원 가면 많이 긴장해서 조금 입질이 있을 수 있어요 / 왼쪽 뒷다리를 자꾸 핥는데 진찰 시 확인 부탁드려요 / 평소 궁금했던 점 등 자유롭게 적어주세요."
+            },
+            cat: {
+                name: "고양이",
+                badgeIcon: "fa-cat",
+                bannerTag: "반려묘 맞춤형 정밀 건강검진 (Cat Friendly)",
+                bannerTitle: "우리 고양이의 건강 상태를 알려주세요",
+                petNamePlaceholder: "예: 나비, 치즈, 루비, 모모",
+                foodPlaceholder: "예: 로얄캐닌 인도어, 힐스 c/d, 파미나, 주식캔 브랜드 등",
+                snackPlaceholder: "예: 츄르(스틱간식), 동결건조 닭가슴살, 캣그라스 등",
+                walkLabel: "7. 실내 생활 환경 및 수직공간(캣타워) 활동성",
+                walkOptions: [
+                    { value: "단독 묘 가정 (실내 생활, 우다다 및 점프 활발함)", label: "외동묘 가정 (실내 생활, 우다다 및 점프 활발함)", selected: true },
+                    { value: "다묘 가정 (2마리 이상 합사 생활 중)", label: "다묘 가정 (2마리 이상 함께 생활 중)" },
+                    { value: "최근 높은 곳(캣타워/소파) 점프를 주저하거나 잠만 잠", label: "최근 높은 곳 점프를 주저하거나 활동량이 크게 줄었음 (주의)" },
+                    { value: "산책냥이 또는 베란다/마당 외출 경험 있음", label: "가끔 외출하거나 베란다/마당에 나감" },
+                    { value: "기타", label: "기타 (다묘 마릿수나 환경 직접 입력)" }
+                ],
+                vaxLabel: "1. 정기 예방접종 (고양이 종합백신 3종/4종, 백혈병, 광견병 등)",
+                pastHistoryItems: [
+                    "방광염 (특발성 방광염/FLUTD/혈뇨)",
+                    "신장 질환 (만성 신부전 CKD / SDMA 상승)",
+                    "구내염 / 치아흡수성병변(FORL) / 발치",
+                    "심장 질환 (비대성 심근증 HCM / 심잡음)",
+                    "췌장염 / 염증성 장질환(IBD) / 만성 구토",
+                    "고양이 천식 / 만성 허피스(결막염/비염)",
+                    "갑상선 기능 항진증 / 당뇨",
+                    "고양이 복막염(FIP) / 범백 / 구충 이력",
+                    "피부병 (링웜/곰팡이/턱드름/귀진드기)"
+                ],
+                symptomCategories: [
+                    {
+                        title: "눈 · 귀 · 상부호흡기(허피스/칼리시) 증상",
+                        icon: "fa-eye",
+                        name: "symEyeEar",
+                        items: [
+                            { value: "눈물/결막 부종/눈곱 증가 또는 눈을 찡그림", label: "눈곱·눈물이 늘거나 한쪽 눈을 찡그림(윙크)" },
+                            { value: "재채기 / 콧물 / 코막힘 소리", label: "재채기를 자주 하거나 콧물·코막힘 소리가 남" },
+                            { value: "눈동자 혼탁/백탁 또는 시력 저하(동공 확장)", label: "눈동자가 뿌옇거나 동공이 계속 커져 있음(고혈압/시력저하)" },
+                            { value: "귀를 자주 털거나 검은 귀지/외이염 증상", label: "귀를 자주 긁거나 검붉은 귀지가 많음" }
+                        ]
+                    },
+                    {
+                        title: "구강 (구내염/FORL) · 헤어볼/소화기 증상",
+                        icon: "fa-tooth",
+                        name: "symOralGi",
+                        items: [
+                            { value: "심한 구취 / 침 흘림 / 잇몸 발적(구내염/치아흡수병변)", label: "입냄새가 심하고 잇몸이 붉거나 침을 흘림" },
+                            { value: "사료 먹을 때 소리를 내거나 흘리고 씹기 아파함", label: "밥 먹을 때 아파하거나 사료를 자꾸 떨어뜨림" },
+                            { value: "잦은 헤어볼 구토 또는 사료토/공복토 (주 1~2회 이상)", label: "헤어볼 구토나 사료토·거품토를 자주 함" },
+                            { value: "체중 감소 (먹는 양에 비해 살이 빠지고 등뼈가 만져짐)", label: "예전보다 살이 빠지고 등뼈나 골반이 도드라짐" }
+                        ]
+                    },
+                    {
+                        title: "호흡기(천식) · 심장(HCM) · 비뇨기(FLUTD) 증상",
+                        icon: "fa-heart-pulse",
+                        name: "symCardioResp",
+                        items: [
+                            { value: "몸을 낮추고 목을 빼며 '켁켁' 기침 (고양이 천식 의심)", label: "헤어볼 토하듯 몸을 낮추고 '켁켁' 기침을 함" },
+                            { value: "개구호흡 (입을 벌리고 헐떡임) 또는 안정 시 호흡수 증가", label: "입을 벌리고 숨을 쉬거나(개구호흡) 배로 숨을 쉼" },
+                            { value: "화장실을 들락날락하거나 배뇨 시 울음소리/혈뇨 (방광염/요도폐색)", label: "화장실에 자주 가는데 소변을 조금만 보거나 울음소리를 냄" },
+                            { value: "화장실이 아닌 곳(이불/바닥)에 소변 실수", label: "평소 안 그러던 아이가 이불이나 바닥에 소변 실수를 함" }
+                        ]
+                    },
+                    {
+                        title: "피부(오버그루밍) · 종괴 · 관절/행동 증상",
+                        icon: "fa-paw",
+                        name: "symSkinJoint",
+                        items: [
+                            { value: "특정 부위(배/다리)를 과도하게 핥아 털이 빠짐(오버그루밍)", label: "배나 다리를 집착적으로 핥아서 땜빵(탈모)이 생김" },
+                            { value: "턱 밑 검은 피지(턱드름) 또는 피부 각질/딱지", label: "턱드름이 심하거나 피부에 딱지·비듬이 많음" },
+                            { value: "피부나 배(유선)에 만져지는 혹이나 멍울이 있음", label: "몸이나 배(유선) 주변에 만져지는 혹이 있음" },
+                            { value: "높은 곳 점프를 실패하거나 뒷다리 보행이 어색함(관절염)", label: "캣타워 점프를 주저하거나 구석에 숨어 지내는 시간이 늘었음" }
+                        ]
+                    }
+                ],
+                step5Title: "고양이 인지기능장애 평가 척도 (FCDS - VISHDAAL)",
+                step5Desc: "지난 6개월간 관찰한 고양이의 행동 변화 빈도를 평가하는 <strong>FCDS (VISHDAAL 17문항)</strong> 설문지입니다. 각 항목의 빈도에 가장 가까운 점수를 선택해주세요. <span class='text-mari-mint font-semibold'>(어린 고양이이거나 이상 증상이 전혀 없다면 기본값인 '0점(관찰된 적 없음)' 상태로 다음 단계로 넘어가셔도 됩니다.)</span>",
+                scaleLabel: "FCDS 실시간 총점 (0~68점):",
+                criteriaHtml: "판정 기준: <strong>0~10점</strong> 정상 노화 &nbsp;|&nbsp; <strong>11~25점</strong> 경도 인지장애(MCI/위험군) &nbsp;|&nbsp; <strong>26점 이상</strong> 중등도·중증 인지기능장애(FCDS)",
+                footnoteHtml: "* 출처: 고양이 인지기능장애 평가 척도 (Feline Cognitive Dysfunction Scale - FCDS / VISHDAAL 하이브리드 빈도 기반 임상 평가 도구, 총점 0~68점)",
+                reportSectionTitle: "고양이 인지기능장애 척도 (FCDS - VISHDAAL) 평가 결과",
+                memoPlaceholder: "예: 낯선 곳을 무서워해서 이동장이나 담요 속에서 진찰받으면 덜 긴장해요 / 최근 화장실 감자 크기가 커졌어요 / 치아 쪽을 유심히 봐주세요 등 자유롭게 적어주세요."
+            }
+        };
+
+        // ================= 강아지용 CCDR 13문항 데이터 정의 (제다큐어 / Salvin HE et al. 2011) =================
+        const dogCcdrQuestions = [
             // 그룹 A: 빈도 평가 (1~6번)
             {
                 id: 1,
+                code: "문항 1",
                 groupTitle: "빈도 평가 (문항 1 ~ 6)",
                 text: "1. 얼마나 자주 당신의 반려견이 왔다갔다 하거나, 원을 그리며 돌거나, 특정한 방향 또는 목적 없이 헤매나요?",
                 options: [
@@ -1147,6 +1310,7 @@
             },
             {
                 id: 2,
+                code: "문항 2",
                 text: "2. 얼마나 자주 당신의 반려견이 벽이나 바닥을 멍하니 응시하나요?",
                 options: [
                     { label: "한번도 없음", score: 1 },
@@ -1159,6 +1323,7 @@
             },
             {
                 id: 3,
+                code: "문항 3",
                 text: "3. 얼마나 자주 당신의 반려견이 가구 뒤에서 꼼짝 못하고 있고 돌아나오지 못하나요?",
                 options: [
                     { label: "한번도 없음", score: 1 },
@@ -1171,6 +1336,7 @@
             },
             {
                 id: 4,
+                code: "문항 4",
                 text: "4. 얼마나 자주 당신의 반려견이 친숙한 사람이나 동물을 알아보지 못하나요?",
                 options: [
                     { label: "한번도 없음", score: 1 },
@@ -1183,6 +1349,7 @@
             },
             {
                 id: 5,
+                code: "문항 5",
                 text: "5. 얼마나 자주 당신의 반려견이 벽이나 문을 향해 걸어가나요?",
                 options: [
                     { label: "한번도 없음", score: 1 },
@@ -1195,6 +1362,7 @@
             },
             {
                 id: 6,
+                code: "문항 6",
                 text: "6. 당신이 반려견을 쓰다듬을 때 얼마나 자주 반려견이 떠나버리거나 쓰다듬는 것을 피하나요?",
                 options: [
                     { label: "한번도 없음", score: 1 },
@@ -1208,6 +1376,7 @@
             // 그룹 B: 비율 평가 (7번)
             {
                 id: 7,
+                code: "문항 7",
                 groupTitle: "음식 탐색 능력 평가 (문항 7)",
                 text: "7. 얼마나 자주 당신의 반려견이 바닥에 떨어진 음식을 찾기 어려워하나요?",
                 options: [
@@ -1222,6 +1391,7 @@
             // 그룹 C: 6개월 전과 비교 평가 (8~12번, 11번x2배 / 12번x3배 가중치)
             {
                 id: 8,
+                code: "문항 8",
                 groupTitle: "6개월 전과 비교한 변화 평가 (문항 8 ~ 12)",
                 text: "8. 6개월 전과 비교하여 당신의 반려견이 왔다갔다 하거나, 원을 그리며 돌거나, 특정한 방향 또는 목적 없이 헤매나요?",
                 options: [
@@ -1235,6 +1405,7 @@
             },
             {
                 id: 9,
+                code: "문항 9",
                 text: "9. 6개월 전과 비교하여 당신의 반려견이 얼마나 더 벽이나 바닥을 멍하니 응시하나요?",
                 options: [
                     { label: "훨씬 덜함", score: 1 },
@@ -1247,6 +1418,7 @@
             },
             {
                 id: 10,
+                code: "문항 10",
                 text: "10. 6개월 전과 비교하여 당신의 반려견이 얼마나 더 대소변을 잘 못 가리나요?",
                 subNote: "* 지금껏 한 번도 대소변 실수를 한 적이 없다면 숫자 3(이전과 같음)에 체크해주세요.",
                 options: [
@@ -1260,6 +1432,7 @@
             },
             {
                 id: 11,
+                code: "문항 11",
                 text: "11. 6개월 전과 비교하여 당신의 반려견이 얼마나 더 바닥에 떨어진 음식을 찾기 어려워하나요?",
                 options: [
                     { label: "훨씬 덜함", score: 2 },
@@ -1272,6 +1445,7 @@
             },
             {
                 id: 12,
+                code: "문항 12",
                 text: "12. 6개월 전과 비교하여 당신의 반려견이 얼마나 더 친숙한 사람이나 동물을 알아보지 못하나요?",
                 options: [
                     { label: "훨씬 덜함", score: 3 },
@@ -1285,6 +1459,7 @@
             // 그룹 D: 활동성 비교 평가 (13번)
             {
                 id: 13,
+                code: "문항 13",
                 groupTitle: "6개월 전과 비교한 활동성 평가 (문항 13)",
                 text: "13. 6개월 전과 비교하여 당신의 반려견이 얼마나 더 활발히 지내고 있나요?",
                 options: [
@@ -1298,19 +1473,288 @@
             }
         ];
 
+        // ================= 고양이용 FCDS 17문항 데이터 정의 (VISHDAAL 척도 / 0~4점 빈도 채점) =================
+        const fcdsCommonOptions = [
+            { label: "관찰된 적 없음", subLabel: "지난 6개월간 없음", score: 0 },
+            { label: "경미", subLabel: "월 1회 미만", score: 1 },
+            { label: "중등도", subLabel: "월 1~3회", score: 2 },
+            { label: "심각", subLabel: "주 1~3회", score: 3 },
+            { label: "매우 심각", subLabel: "거의 매일", score: 4 }
+        ];
+
+        const catFcdsQuestions = [
+            // V. 울음소리 (Vocalization)
+            {
+                id: 1,
+                code: "V1 (울음소리)",
+                groupTitle: "V. 울음소리 (Vocalization)",
+                text: "V1. 특별한 이유 없이(예: 배고픔, 고통 제외) 크고 반복적으로 웁니다.",
+                subNote: "예: 목적 없이 울거나, 밤에 잠을 깨울 정도로 크게 우는 행동. 보호자가 반응해도 그치지 않을 수 있습니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 2,
+                code: "V2 (야간 울음)",
+                text: "V2. 밤에 더 자주, 더 크게 웁니다.",
+                subNote: "예: '선다운 증후군'과 유사하게 해질녘이나 밤에 불안해하며 우는 행동이 증가합니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // I. 상호작용 (Interaction)
+            {
+                id: 3,
+                code: "I1 (관심 감소)",
+                groupTitle: "I. 상호작용 (Interaction)",
+                text: "I1. 가족 구성원이나 다른 반려동물에 대한 관심이 줄었습니다.",
+                subNote: "예: 이전에는 좋아했던 쓰다듬기나 인사를 피하거나, 다른 동물과의 교류를 회피합니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 4,
+                code: "I2 (짜증/공격성)",
+                text: "I2. 이전에 비해 더 짜증을 내거나 공격적인 모습을 보입니다.",
+                subNote: "예: 익숙한 사람이나 동물을 향해 이유 없이 하악질을 하거나 공격성을 보입니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 5,
+                code: "I3 (과도한 집착)",
+                text: "I3. 보호자에게 지나치게 매달리거나 계속 따라다닙니다 (분리불안 포함).",
+                subNote: "예: 보호자가 잠시만 떨어져도 불안해하고, 끊임없이 접촉을 시도하는 '집착적인' 행동을 보입니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // S. 수면-각성 주기 (Sleep-Wake)
+            {
+                id: 6,
+                code: "S1 (낮 수면 증가)",
+                groupTitle: "S. 수면-각성 주기 (Sleep-Wake)",
+                text: "S1. 낮에 자는 시간이 눈에 띄게 늘었습니다.",
+                subNote: "예: 하루 종일 무기력하게 잠만 자고, 활동적인 시간이 줄어듭니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 7,
+                code: "S2 (야간 배회/불면)",
+                text: "S2. 밤에 잠을 잘 자지 못하고 안절부절못하거나 돌아다닙니다.",
+                subNote: "예: 깊은 잠을 못 자고 밤새 서성이거나, 자다 깨서 우는 등의 행동을 보입니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // H. 배변 실수 (House-soiling)
+            {
+                id: 8,
+                code: "H1 (배변 실수)",
+                groupTitle: "H. 배변 실수 (House-soiling)",
+                text: "H1. 지정된 화장실이 아닌 곳에 소변이나 대변 실수를 합니다.",
+                subNote: "예: 이전에 배변 훈련이 완벽했던 고양이가 거실, 침대 등 아무 곳에나 배변합니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // D. 방향감각 상실 (Disorientation)
+            {
+                id: 9,
+                code: "D1 (길 잃음/구석 갇힘)",
+                groupTitle: "D. 방향감각 상실 (Disorientation)",
+                text: "D1. 익숙한 집 안에서 길을 잃거나 구석에 갇혀 빠져나오지 못합니다.",
+                subNote: "예: 가구 뒤나 방구석에 들어갔다가 나오는 길을 찾지 못하고 한참 동안 헤맵니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 10,
+                code: "D2 (허공 응시)",
+                text: "D2. 벽이나 허공을 멍하니 응시합니다.",
+                subNote: "예: 주변 자극에 반응 없이 '넋이 나간 듯' 한 곳을 오랫동안 쳐다봅니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 11,
+                code: "D3 (가족 못 알아봄)",
+                text: "D3. 익숙한 사람이나 다른 반려동물을 알아보지 못하는 것처럼 보입니다.",
+                subNote: "예: 가족 구성원을 보고도 마치 처음 보는 사람처럼 경계하거나 무관심하게 반응합니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // A. 활동성 (Activity)
+            {
+                id: 12,
+                code: "A1 (목적 없는 배회)",
+                groupTitle: "A. 활동성 (Activity)",
+                text: "A1. 목적 없이 집 안을 계속 배회하거나 서성거립니다.",
+                subNote: "예: 특별한 목적지 없이 안절부절못하며 집 안을 계속 돌아다니는 행동을 보입니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 13,
+                code: "A2 (놀이 흥미 감소)",
+                text: "A2. 장난감, 놀이, 탐험 등 이전에 즐기던 활동에 대한 흥미가 줄었습니다.",
+                subNote: "예: 가장 좋아하던 장난감에도 반응하지 않고, 새로운 환경에 대한 호기심이 사라집니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 14,
+                code: "A3 (그루밍 감소)",
+                text: "A3. 그루밍(몸단장)을 거의 하지 않아 털이 엉키고 지저분합니다.",
+                subNote: "예: 고양이의 본능적인 청결 행동이 감소하여 털 상태가 눈에 띄게 나빠집니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // A. 불안 (Anxiety)
+            {
+                id: 15,
+                code: "Anx1 (불안/과민반응)",
+                groupTitle: "A. 불안 (Anxiety)",
+                text: "A1(불안). 사소한 소리나 자극에도 이전보다 더 쉽게 놀라거나 두려워합니다.",
+                subNote: "예: 초인종 소리, 문 닫는 소리 등 일상적인 자극에 과도하게 반응하며 숨거나 불안해합니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            // L. 학습/기억력 (Learning/Memory)
+            {
+                id: 16,
+                code: "L1 (규칙 망각)",
+                groupTitle: "L. 학습/기억력 (Learning/Memory)",
+                text: "L1. 이전에 배웠던 간단한 명령이나 규칙(예: '안돼')을 잊어버린 것 같습니다.",
+                subNote: "예: 이전에 잘 따르던 규칙을 더 이상 이해하지 못하는 것처럼 행동합니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            },
+            {
+                id: 17,
+                code: "L2 (적응력 저하)",
+                text: "L2. 새로운 것을 가르치거나 새로운 환경에 적응하는 데 어려움을 겪습니다.",
+                subNote: "예: 새로운 장난감 사용법을 배우거나 이사·가구 배치 변경 후 적응하는 속도가 현저히 느려집니다.",
+                options: fcdsCommonOptions,
+                defaultIndex: 0
+            }
+        ];
+
+        // 현재 선택된 종의 인지기능 문항 리스트 반환 헬퍼
+        function getCurrentCognitiveQuestions() {
+            return selectedSpecies === 'cat' ? catFcdsQuestions : dogCcdrQuestions;
+        }
+
         // 초기 실행
         window.onload = function() {
-            renderCcdrQuestions();
-            updateCcdrScore();
+            applySpeciesTemplate('dog');
             updateStepUI();
         };
 
-        // CCDR 13문항 UI 렌더링
+        // 첫 화면에서 강아지 또는 고양이 선택 시 호출
+        function selectSpecies(species) {
+            selectedSpecies = species;
+            applySpeciesTemplate(species);
+            currentStep = 1;
+            updateStepUI();
+
+            document.getElementById('speciesSelectView').classList.add('hidden');
+            document.getElementById('reportView').classList.add('hidden');
+            document.getElementById('formView').classList.remove('hidden');
+
+            const changeBtn = document.getElementById('changeSpeciesBtn');
+            changeBtn.classList.remove('hidden');
+            changeBtn.classList.add('inline-flex');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 다시 강아지/고양이 선택 첫 화면으로 이동
+        function backToSpeciesSelect() {
+            document.getElementById('formView').classList.add('hidden');
+            document.getElementById('reportView').classList.add('hidden');
+            document.getElementById('speciesSelectView').classList.remove('hidden');
+            document.getElementById('changeSpeciesBtn').classList.add('hidden');
+            document.getElementById('headerAnimalIcon').className = "fa-solid fa-paw text-xl";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 강아지/고양이 맞춤 문항 및 UI 렌더링
+        function applySpeciesTemplate(species) {
+            const cfg = speciesConfig[species];
+            if (!cfg) return;
+
+            // 헤더 및 배너 업데이트
+            document.getElementById('headerAnimalIcon').className = `fa-solid ${cfg.badgeIcon} text-xl`;
+            document.getElementById('currentSpeciesBadge').textContent = cfg.name;
+            document.getElementById('bannerSpeciesIcon').className = `fa-solid ${cfg.badgeIcon}`;
+            document.getElementById('bannerSpeciesTag').textContent = cfg.bannerTag;
+            document.getElementById('bannerMainTitle').textContent = cfg.bannerTitle;
+
+            // 플레이스홀더 업데이트
+            document.getElementById('petName').placeholder = cfg.petNamePlaceholder;
+            document.getElementById('mainFoodBrand').placeholder = cfg.foodPlaceholder;
+            document.getElementById('extraSnackDiet').placeholder = cfg.snackPlaceholder;
+            document.getElementById('vetMemo').placeholder = cfg.memoPlaceholder;
+
+            // Step 2: 7번 활동성 문항 업데이트
+            document.getElementById('walkActivityLabel').textContent = cfg.walkLabel;
+            const walkSelect = document.getElementById('walkActivity');
+            walkSelect.innerHTML = cfg.walkOptions.map(opt =>
+                `<option value="${opt.value}" ${opt.selected ? 'selected' : ''}>${opt.label}</option>`
+            ).join('');
+            document.getElementById('walkOtherWrap').classList.add('hidden');
+
+            // Step 3: 예방접종 라벨 및 과거 병력 체크박스 렌더링
+            document.getElementById('vaxLabel').textContent = cfg.vaxLabel;
+            const pastGrid = document.getElementById('pastHistoryGrid');
+            pastGrid.innerHTML = cfg.pastHistoryItems.map(item => `
+                <label class="check-card cursor-pointer">
+                    <input type="checkbox" name="pastHistory" value="${item}" class="sr-only">
+                    <div class="p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2 transition">
+                        <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px] shrink-0"><i class="fa-solid fa-check"></i></span>
+                        <span class="leading-tight">${item}</span>
+                    </div>
+                </label>
+            `).join('');
+
+            // Step 4: 신체 기관별 이상 증상 렌더링
+            const symContainer = document.getElementById('symptomSectionsContainer');
+            symContainer.innerHTML = cfg.symptomCategories.map((cat, idx) => `
+                <div class="${idx > 0 ? 'pt-4 border-t border-slate-100' : ''}">
+                    <h4 class="text-sm font-bold text-slate-800 mb-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid ${cat.icon} text-mari-mint"></i> ${cat.title}
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        ${cat.items.map(item => `
+                            <label class="symptom-card cursor-pointer">
+                                <input type="checkbox" name="${cat.name}" value="${item.value}" class="sr-only">
+                                <div class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
+                                    <span class="check-icon w-4 h-4 rounded border border-slate-300 flex items-center justify-center text-[10px] shrink-0"><i class="fa-solid fa-check"></i></span>
+                                    <span>${item.label}</span>
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Step 5 타이틀, 설명, 배너 기준, 각주 및 문항 동적 업데이트
+            stepTitles[4] = `Step 5. ${cfg.step5Title}`;
+            document.getElementById('step5MainTitle').textContent = cfg.step5Title;
+            document.getElementById('step5DescText').innerHTML = cfg.step5Desc;
+            document.getElementById('ccdrScaleLabelText').textContent = cfg.scaleLabel;
+            document.getElementById('ccdrCriteriaText').innerHTML = cfg.criteriaHtml;
+            document.getElementById('ccdrFootnoteText').innerHTML = cfg.footnoteHtml;
+            document.getElementById('repCcdrSectionTitle').textContent = cfg.reportSectionTitle;
+
+            renderCcdrQuestions();
+            updateCcdrScore();
+        }
+
+        // 강아지 CCDR(13문항) 또는 고양이 FCDS(17문항) UI 렌더링
         function renderCcdrQuestions() {
             const container = document.getElementById('ccdrQuestionsContainer');
+            const questions = getCurrentCognitiveQuestions();
             let html = '';
 
-            ccdrQuestions.forEach((q) => {
+            questions.forEach((q) => {
                 if (q.groupTitle) {
                     html += `
                         <div class="pt-3 first:pt-0">
@@ -1325,7 +1769,7 @@
                     <div class="bg-slate-50/70 p-4 rounded-2xl border border-slate-200/80 space-y-3">
                         <div>
                             <p class="text-sm font-bold text-slate-800 leading-snug">${q.text}</p>
-                            ${q.subNote ? `<p class="text-xs text-mari-mint font-semibold mt-1">${q.subNote}</p>` : ''}
+                            ${q.subNote ? `<p class="text-xs text-slate-500 font-medium mt-1">${q.subNote}</p>` : ''}
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                             ${q.options.map((opt, idx) => {
@@ -1334,9 +1778,10 @@
                                 const cardClass = isHighScore ? 'symptom-card' : 'check-card';
                                 return `
                                     <label class="${cardClass} cursor-pointer">
-                                        <input type="radio" name="ccdr_q${q.id}" value="${opt.score}" data-label="${opt.label}" data-idx="${idx}" ${isChecked} onchange="updateCcdrScore()" class="sr-only">
+                                        <input type="radio" name="ccdr_q${q.id}" value="${opt.score}" data-label="${opt.label}${opt.subLabel ? ' - ' + opt.subLabel : ''}" data-idx="${idx}" ${isChecked} onchange="updateCcdrScore()" class="sr-only">
                                         <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center transition h-full flex flex-col justify-center items-center">
-                                            <span class="text-xs font-medium block">${opt.label}</span>
+                                            <span class="text-xs font-bold block">${opt.label}</span>
+                                            ${opt.subLabel ? `<span class="text-[11px] text-slate-400 block mt-0.5">${opt.subLabel}</span>` : ''}
                                             <span class="text-xs font-extrabold mt-0.5 opacity-80">(${opt.score}점)</span>
                                         </div>
                                     </label>
@@ -1350,37 +1795,66 @@
             container.innerHTML = html;
         }
 
-        // CCDR 점수 실시간 합산 및 상태 업데이트
+        // 강아지 CCDR 또는 고양이 FCDS 점수 실시간 합산 및 판정 업데이트
         function getCcdrSummary() {
             let total = 0;
             const abnormalItems = [];
+            const questions = getCurrentCognitiveQuestions();
 
-            ccdrQuestions.forEach((q) => {
-                const selected = document.querySelector(`input[name="ccdr_q${q.id}"]:checked`);
-                if (selected) {
-                    const score = parseInt(selected.value, 10);
-                    const label = selected.getAttribute('data-label');
-                    const idx = parseInt(selected.getAttribute('data-idx'), 10);
-                    total += score;
-
-                    // 문항 1~7은 2점 이상(idx >= 1), 문항 8~13은 '약간 심함/적음' 이상(idx >= 3)일 때 특이항목으로 기록
-                    if ((q.id <= 7 && idx >= 1) || (q.id >= 8 && idx >= 3)) {
-                        abnormalItems.push(`문항 ${q.id}: ${label} (${score}점)`);
+            if (selectedSpecies === 'cat') {
+                // 고양이 FCDS (17문항, 0~68점 만점)
+                questions.forEach((q) => {
+                    const selected = document.querySelector(`input[name="ccdr_q${q.id}"]:checked`);
+                    if (selected) {
+                        const score = parseInt(selected.value, 10);
+                        const label = selected.getAttribute('data-label');
+                        total += score;
+                        if (score >= 1) {
+                            abnormalItems.push(`${q.code}: ${label} (${score}점)`);
+                        }
                     }
+                });
+
+                let statusText = "정상 노화 / 임상증상 발현 전 단계 (0~10점)";
+                let statusLevel = "normal";
+                if (total >= 26) {
+                    statusText = "중등도·중증 인지기능장애 FCDS (26점 이상)";
+                    statusLevel = "ccds";
+                } else if (total >= 11) {
+                    statusText = "경도 인지장애 MCI 위험군 (11~25점)";
+                    statusLevel = "risk";
                 }
-            });
 
-            let statusText = "정상 (39점 이하)";
-            let statusLevel = "normal"; // normal, risk, ccds
-            if (total >= 50) {
-                statusText = "인지기능장애 증후군 (50점 이상)";
-                statusLevel = "ccds";
-            } else if (total >= 40) {
-                statusText = "인지기능장애 위험군 (40~49점)";
-                statusLevel = "risk";
+                return { total, statusText, statusLevel, abnormalItems, scaleName: "FCDS (VISHDAAL)" };
+            } else {
+                // 강아지 CCDR (13문항, 기본 28점~)
+                questions.forEach((q) => {
+                    const selected = document.querySelector(`input[name="ccdr_q${q.id}"]:checked`);
+                    if (selected) {
+                        const score = parseInt(selected.value, 10);
+                        const label = selected.getAttribute('data-label');
+                        const idx = parseInt(selected.getAttribute('data-idx'), 10);
+                        total += score;
+
+                        // 문항 1~7은 2점 이상(idx >= 1), 문항 8~13은 '약간 심함/적음' 이상(idx >= 3)일 때 특이항목으로 기록
+                        if ((q.id <= 7 && idx >= 1) || (q.id >= 8 && idx >= 3)) {
+                            abnormalItems.push(`${q.code}: ${label} (${score}점)`);
+                        }
+                    }
+                });
+
+                let statusText = "정상 (39점 이하)";
+                let statusLevel = "normal";
+                if (total >= 50) {
+                    statusText = "인지기능장애 증후군 (50점 이상)";
+                    statusLevel = "ccds";
+                } else if (total >= 40) {
+                    statusText = "인지기능장애 위험군 (40~49점)";
+                    statusLevel = "risk";
+                }
+
+                return { total, statusText, statusLevel, abnormalItems, scaleName: "CCDR" };
             }
-
-            return { total, statusText, statusLevel, abnormalItems };
         }
 
         function updateCcdrScore() {
@@ -1404,16 +1878,20 @@
             }
         }
 
-        // CCDR 기본 정상값(1~7번: 한번도없음/해당없음, 8~13번: 이전과같음) 일괄 세팅
+        // 인지기능 설문 전 문항 기본 정상값 일괄 세팅
         function resetCcdrToNormal() {
-            ccdrQuestions.forEach((q) => {
+            const questions = getCurrentCognitiveQuestions();
+            questions.forEach((q) => {
                 const radios = document.querySelectorAll(`input[name="ccdr_q${q.id}"]`);
                 if (radios[q.defaultIndex]) {
                     radios[q.defaultIndex].checked = true;
                 }
             });
             updateCcdrScore();
-            showToast("CCDR 13문항이 모두 정상(기본값)으로 설정되었습니다.");
+            const msg = selectedSpecies === 'cat'
+                ? "고양이 FCDS 17문항이 모두 정상(0점: 관찰된 적 없음)으로 설정되었습니다."
+                : "강아지 CCDR 13문항이 모두 정상(기본값)으로 설정되었습니다.";
+            showToast(msg);
         }
 
         // '기타' 직접 입력란 토글 헬퍼 함수들
@@ -1474,11 +1952,21 @@
             if (targetStep > currentStep && !validateCurrentStep()) {
                 return;
             }
+            if (targetStep === 7 && currentStep < 6) {
+                const allNotices = document.querySelectorAll('input[name="essentialNotice"]');
+                const checkedNotices = document.querySelectorAll('input[name="essentialNotice"]:checked');
+                if (checkedNotices.length < allNotices.length) {
+                    currentStep = 6;
+                    updateStepUI();
+                    showToast("6단계 안내사항 11개 문장을 먼저 읽고 모두 체크해주세요!");
+                    return;
+                }
+            }
             currentStep = targetStep;
             updateStepUI();
         }
 
-        // 필수 입력값 검증 (Step 1: 반려동물 이름, 등록 연락처, 이메일 주소)
+        // 필수 입력값 검증 (Step 1: 기본정보, Step 6: 안내사항 11개 체크)
         function validateCurrentStep() {
             if (currentStep === 1) {
                 const pName = document.getElementById('petName').value.trim();
@@ -1491,6 +1979,14 @@
                 }
                 if (!gEmail.includes('@')) {
                     showToast("올바른 이메일 주소 형식을 입력해주세요.");
+                    return false;
+                }
+            }
+            if (currentStep === 6) {
+                const allNotices = document.querySelectorAll('input[name="essentialNotice"]');
+                const checkedNotices = document.querySelectorAll('input[name="essentialNotice"]:checked');
+                if (checkedNotices.length < allNotices.length) {
+                    showToast(`안내사항 ${allNotices.length}개 문장을 모두 읽고 체크해주셔야 다음 단계로 이동할 수 있습니다. (현재 ${checkedNotices.length}/${allNotices.length}개 확인됨)`);
                     return false;
                 }
             }
@@ -1566,13 +2062,30 @@
             return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
         }
 
+        // Step 7 필수 안내사항 개별 체크 진행 현황 업데이트
+        function updateNoticeProgress() {
+            const allNotices = document.querySelectorAll('input[name="essentialNotice"]');
+            const checkedNotices = document.querySelectorAll('input[name="essentialNotice"]:checked');
+            const counterEl = document.getElementById('noticeCheckCounter');
+            if (!counterEl) return;
+
+            counterEl.textContent = `${checkedNotices.length} / ${allNotices.length}개 확인됨`;
+            if (checkedNotices.length === allNotices.length) {
+                counterEl.className = "text-xs font-extrabold px-3 py-1 rounded-full bg-mari-mint text-white border border-mari-mint";
+            } else {
+                counterEl.className = "text-xs font-extrabold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300";
+            }
+        }
+
         // 폼 제출 및 요약 리포트 생성
         function handleFormSubmit(e) {
             e.preventDefault();
             if (!validateCurrentStep()) return;
 
-            if (!document.getElementById('fastingConfirm').checked) {
-                showToast("검진 전 금식 및 주의사항 안내 확인에 체크해주세요.");
+            const allNotices = document.querySelectorAll('input[name="essentialNotice"]');
+            const checkedNotices = document.querySelectorAll('input[name="essentialNotice"]:checked');
+            if (checkedNotices.length < allNotices.length) {
+                showToast(`필수 안내사항 ${allNotices.length}개 문장을 모두 읽고 체크해주세요! (현재 ${checkedNotices.length}/${allNotices.length}개 완료)`);
                 return;
             }
 
@@ -1665,7 +2178,11 @@
             // Step 5: CCDR 점수 및 상태
             const ccdrResult = getCcdrSummary();
 
-            // Step 6: 수의사 전달 말씀 (기타)
+            // Step 7: 다음 건강검진 알람 신청 및 수의사 전달 말씀 (기타)
+            let reminder = document.querySelector('input[name="checkupReminder"]:checked')?.value || '1년 간격으로 알람 신청';
+            if (reminder === '기타') {
+                reminder = `기타(${document.getElementById('reminderOtherText').value.trim() || '직접입력'})`;
+            }
             const memo = document.getElementById('vetMemo').value.trim() || '별도 기재 내용 없음';
 
             // 작성 일시
@@ -1673,10 +2190,13 @@
             const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
             document.getElementById('reportTimestamp').textContent = `작성일시: ${timeStr}`;
 
+            const speciesKr = speciesConfig[selectedSpecies].name;
+            document.getElementById('repSpeciesTag').textContent = speciesKr;
+
             // 기본 정보 바인딩
-            document.getElementById('repPetName').textContent = pName;
+            document.getElementById('repPetName').textContent = `${pName} (${speciesKr})`;
             document.getElementById('repEmailHeader').textContent = gEmail;
-            document.getElementById('repPetProfile').textContent = pName;
+            document.getElementById('repPetProfile').textContent = `${pName} (${speciesKr})`;
             document.getElementById('repGuardianPhone').textContent = gPhone;
             document.getElementById('repGuardianEmail').textContent = gEmail;
 
@@ -1712,7 +2232,8 @@
 
             const ccdrDetailContainer = document.getElementById('repCcdrDetailList');
             if (ccdrResult.abnormalItems.length === 0) {
-                ccdrDetailContainer.innerHTML = `<span class="text-slate-500">체크된 특이 인지기능 이상 항목 없음 (총점 ${ccdrResult.total}점 / 39점 이하 정상 범위)</span>`;
+                const normalCutoff = selectedSpecies === 'cat' ? '0~10점 정상 노화 범위' : '39점 이하 정상 범위';
+                ccdrDetailContainer.innerHTML = `<span class="text-slate-500">체크된 특이 인지기능 이상 항목 없음 (총점 ${ccdrResult.total}점 / ${normalCutoff})</span>`;
             } else {
                 ccdrDetailContainer.innerHTML = `
                     <p class="text-xs font-bold text-slate-500 mb-1">주요 체크 문항:</p>
@@ -1723,8 +2244,8 @@
                     </div>
                 `;
             }
-
-            // 메모 바인딩
+            // 메모 및 알람 신청 바인딩
+            document.getElementById('repReminder').textContent = reminder;
             document.getElementById('repMemo').textContent = memo;
 
             // ================= 수의사 브리핑용 주의/이상 증상 하이라이트 수집 =================
@@ -1743,7 +2264,7 @@
             symCardioResp.forEach(s => allWarnings.push(`[호흡/순환기] ${s}`));
             symSkinJoint.forEach(s => allWarnings.push(`[피부/근골격] ${s}`));
             if (ccdrResult.statusLevel === 'ccds' || ccdrResult.statusLevel === 'risk') {
-                allWarnings.push(`[인지기능 CCDR] ${ccdrResult.total}점 (${ccdrResult.statusText})`);
+                allWarnings.push(`[인지기능 ${ccdrResult.scaleName}] ${ccdrResult.total}점 (${ccdrResult.statusText})`);
             }
 
             const alertBox = document.getElementById('clinicalAlertBox');
@@ -1779,21 +2300,22 @@
             }
 
             // 카카오톡/문자 전송용 텍스트 포맷 생성
-            formattedReportText = `[다산마리동물병원 건강검진 사전 문진표]
-■ 반려동물 이름: ${pName}
+            formattedReportText = `[다산마리동물병원 ${speciesKr} 건강검진 사전 문진표]
+■ 반려동물 이름: ${pName} (${speciesKr})
 ■ 등록 연락처: ${gPhone}
 ■ 결과 수령 이메일: ${gEmail}
 
 [중점 확인 이상 증상 (${allWarnings.length}건)]
 ${allWarnings.length > 0 ? allWarnings.map(w => `• ${w}`).join('\n') : '• 특이 이상 증상 없음'}
 
-[식이 · 음수 · 배변 상태]
+[식이 · 음수 · 배변 · 생활환경]
 • 주식 형태/사료명: ${dietTypes.join(', ')} (사료명: ${mainFoodBrand})
 • 별도 간식/식단: ${extraSnackDiet} (빈도: ${treat})
 • 식욕변화: ${appetite}
 • 음수량 변화: ${water}
 • 100ml/kg 이상 음수 여부: ${water100ml}
 • 대소변 상태: ${stoolUrine.join(', ')}
+• 산책/생활환경: ${walk}
 
 [예방의학 및 병력 요약]
 • 예방접종: ${vax}
@@ -1801,11 +2323,13 @@ ${allWarnings.length > 0 ? allWarnings.map(w => `• ${w}`).join('\n') : '• �
 • 과거병력: ${combinedPast.length ? combinedPast.join(', ') : '없음'}
 • 복용약/알러지: 약물(${meds}) / 알러지(${allergy})
 
-[인지기능장애 척도 (CCDR)]
+[인지기능장애 척도 (${ccdrResult.scaleName})]
 • 총점: ${ccdrResult.total}점 (${ccdrResult.statusText})
+${ccdrResult.abnormalItems.length > 0 ? `• 체크항목: ${ccdrResult.abnormalItems.join(', ')}` : ''}
 
-[기타 (담당 수의사에게 전할 말씀)]
-• ${memo}`;
+[기타 (검진 알람 신청 및 수의사에게 전할 말씀)]
+• 다음 건강검진 알람 신청: ${reminder}
+• 수의사 전달사항: ${memo}`;
         }
 
         // 클립보드 복사 함수
@@ -1934,7 +2458,8 @@ ${allWarnings.length > 0 ? allWarnings.map(w => `• ${w}`).join('\n') : '• �
             updateCcdrScore();
 
             document.getElementById('vetMemo').value = "최근 물 마시는 양이 하루 500ml 이상으로 부쩍 늘었고, 흥분하면 거위 소리 같은 기침을 가끔 합니다. 채혈할 때 겁이 조금 많아요.";
-            document.getElementById('fastingConfirm').checked = true;
+            document.querySelectorAll('input[name="essentialNotice"]').forEach(cb => cb.checked = true);
+            updateNoticeProgress();
 
             showToast("테스트용 예시 데이터(CCDR 위험군 포함)가 자동 입력되었습니다!");
         }
