@@ -842,15 +842,15 @@
 
                 <!-- 공유 및 출력 버튼 그룹 -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-5 pt-4 border-t border-amber-900/60">
-                    <button type="button" onclick="sendToKakaoChannel()" class="py-3.5 px-4 rounded-xl bg-[#FEE500] hover:bg-[#FDD800] text-[#3C1E1E] font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md">
-                        <i class="fa-solid fa-comment text-base"></i> 병원 카톡 채널 채팅방 열기
+                    <button type="button" onclick="copyAndOpenKakaoChannel()" class="py-3.5 px-4 rounded-xl bg-[#FEE500] hover:bg-[#FDD800] text-[#3C1E1E] font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md">
+                        <i class="fa-solid fa-comment text-base"></i> 문진 복사 후 카톡 채널 열기
                     </button>
-                    <button type="button" onclick="copyReportToClipboard()" class="py-3 px-4 rounded-xl bg-mari-mint hover:bg-[#734F2C] text-white font-bold text-sm transition flex items-center justify-center gap-2 shadow">
-                        <i class="fa-solid fa-copy"></i> 문진 내용 다시 복사하기
+                    <button type="button" onclick="shareViaMobileSheet()" class="py-3 px-4 rounded-xl bg-mari-mint hover:bg-[#734F2C] text-white font-bold text-sm transition flex items-center justify-center gap-2 shadow">
+                        <i class="fa-solid fa-share-nodes"></i> 카톡/문자로 바로 공유하기
                     </button>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="window.print()" class="py-3 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-print"></i> 인쇄/PDF
+                        <button type="button" onclick="copyReportToClipboard()" class="py-3 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-copy"></i> 내용 복사만
                         </button>
                         <button type="button" onclick="editFormAgain()" class="py-3 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-medium text-xs sm:text-sm transition flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-pen-to-square"></i> 다시 수정
@@ -1020,48 +1020,48 @@
     </main>
 
     <!-- 하단 푸터 -->
-    <footer class="bg-white border-t border-slate-200 py-5 px-4 text-center text-xs text-slate-400 no-print mt-8">
-        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p class="font-semibold text-slate-600">다산마리동물병원 (Dasan Mari Animal Hospital)</p>
-            <p>반려동물의 건강한 평생을 함께합니다 · 사전 문진 시스템</p>
-        </div>
-    </footer>
-
-    <!-- 커스텀 토스트 알림창 -->
-    <div id="toastMessage" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 hidden bg-mari-navy text-white px-5 py-3 rounded-full shadow-xl text-sm font-semibold flex items-center gap-2.5 border border-slate-700">
-        <i class="fa-solid fa-circle-check text-teal-400"></i>
-        <span id="toastText">알림 메시지</span>
-    </div>
-
-    <!-- 카카오톡 채널 원클릭 전송 안내 모달 (문진 완료 즉시 팝업) -->
+    <!-- 카카오톡 채널 원클릭 전송 안내 모달 (카톡 인앱 브라우저 완벽 대응) -->
     <div id="kakaoSendModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-mari-mintBorder space-y-5 text-center animate-[fadeIn_0.2s_ease-in-out]">
-            <div class="w-16 h-16 rounded-2xl bg-[#FEE500] text-[#3C1E1E] flex items-center justify-center text-3xl mx-auto shadow-md">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-mari-mintBorder space-y-4 text-center animate-[fadeIn_0.2s_ease-in-out] max-h-[92vh] overflow-y-auto">
+            <div class="w-14 h-14 rounded-2xl bg-[#FEE500] text-[#3C1E1E] flex items-center justify-center text-2xl mx-auto shadow-md">
                 <i class="fa-solid fa-comment"></i>
             </div>
-            <div class="space-y-2">
-                <span class="inline-block px-3 py-1 rounded-full bg-mari-mintLight text-mari-mint text-xs font-extrabold border border-mari-mintBorder">
-                    <i class="fa-solid fa-check mr-1"></i>문진표 요약본 자동 복사 완료
+            <div class="space-y-1.5">
+                <span id="modalCopyStatusBadge" class="inline-block px-3 py-1 rounded-full bg-mari-mintLight text-mari-mint text-xs font-extrabold border border-mari-mintBorder">
+                    <i class="fa-solid fa-check mr-1"></i>작성 완료! 카톡 전송 준비됨
                 </span>
-                <h3 class="text-xl font-extrabold text-mari-navy">카톡 채팅창에 '붙여넣기' 해주세요!</h3>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    작성해주신 문진표 내용이 스마트폰(클립보드)에 복사되었습니다.<br>
-                    아래 버튼을 눌러 <strong>다산마리동물병원 카톡 채팅방</strong>이 열리면, 메시지 입력창을 길게 눌러 <strong>[붙여넣기]</strong> 후 전송해주세요!
+                <h3 class="text-lg sm:text-xl font-extrabold text-mari-navy">아래 노란 버튼을 눌러 카톡방에 붙여넣기 해주세요!</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    카카오톡 내부 화면에서는 <strong>아래 노란색 버튼을 누르실 때 문진 내용이 한 번 더 확실하게 복사</strong>되며 병원 채팅방으로 이동합니다.
                 </p>
             </div>
 
-            <div class="bg-mari-mintLight/80 rounded-2xl p-3.5 border border-mari-mintBorder text-left text-xs text-mari-navy space-y-1">
-                <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-lightbulb text-mari-mint"></i> 전송 순서 (3초 완료)</div>
-                <p class="text-slate-600">1. 아래 노란색 <strong>[카톡 채팅방 열기]</strong> 버튼 터치</p>
-                <p class="text-slate-600">2. 열린 채팅방 입력창에 <strong>'붙여넣기'</strong> 후 전송!</p>
+            <!-- 카톡 인앱 브라우저에서도 수동/자동 복사가 모두 가능하도록 미리보기 텍스트 박스 제공 -->
+            <div class="text-left space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold text-slate-500"><i class="fa-solid fa-file-lines mr-1 text-mari-mint"></i>전송될 문진표 요약본 (터치 시 전체선택)</span>
+                    <button type="button" onclick="copyFromModalTextarea()" class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg bg-mari-mint text-white hover:bg-[#734F2C] transition">
+                        <i class="fa-regular fa-copy mr-1"></i>수동 복사하기
+                    </button>
+                </div>
+                <textarea id="modalReportPreviewText" readonly onclick="this.focus(); this.select();" rows="4" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-700 font-mono leading-snug focus:border-mari-mint outline-none resize-none"></textarea>
+            </div>
+
+            <div class="bg-mari-mintLight/80 rounded-2xl p-3 border border-mari-mintBorder text-left text-xs text-mari-navy space-y-1">
+                <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-lightbulb text-mari-mint"></i> 카톡에서 전송하는 방법</div>
+                <p class="text-slate-600">1. 아래 <strong>[문진 내용 복사 후 카톡 채팅방 열기]</strong> 터치</p>
+                <p class="text-slate-600">2. 열리는 다산마리동물병원 카톡방 입력창을 길게 눌러 <strong>'붙여넣기'</strong> 후 전송!</p>
             </div>
 
             <div class="space-y-2 pt-1">
-                <a href="https://pf.kakao.com/_QxkpZT/chat" target="_blank" rel="noopener noreferrer" onclick="closeKakaoSendModal()" class="w-full py-4 px-5 rounded-2xl bg-[#FEE500] hover:bg-[#FDD800] text-[#3C1E1E] font-extrabold text-base transition flex items-center justify-center gap-2 shadow-md">
-                    <i class="fa-solid fa-comment"></i> 다산마리동물병원 카톡 채팅방 열기
-                </a>
-                <button type="button" onclick="closeKakaoSendModal()" class="w-full py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-600 transition">
-                    먼저 작성된 리포트 화면 확인하기
+                <button type="button" onclick="copyAndOpenKakaoChannel()" class="w-full py-4 px-5 rounded-2xl bg-[#FEE500] hover:bg-[#FDD800] text-[#3C1E1E] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-solid fa-comment"></i> 문진 내용 복사 후 카톡 채팅방 열기
+                </button>
+                <button type="button" onclick="shareViaMobileSheet()" class="w-full py-3 px-4 rounded-xl bg-mari-mintLight hover:bg-amber-100/70 text-mari-navy border border-mari-mintBorder font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-mari-mint"></i> 복사 안 될 때: 카톡/문자로 바로 공유하기
+                </button>
+                <button type="button" onclick="closeKakaoSendModal()" class="w-full py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-600 transition">
+                    창 닫고 작성된 리포트 화면 보기
                 </button>
             </div>
         </div>
@@ -2078,7 +2078,7 @@
         }
 
         // 폼 제출 및 요약 리포트 생성
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
             if (!validateCurrentStep()) return;
 
@@ -2094,8 +2094,14 @@
             document.getElementById('reportView').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // 문진 완료 즉시 클립보드에 자동 복사 후 카톡 채널 이동 모달 오픈
-            copyTextSilent(formattedReportText);
+            // 모달 내 텍스트박스에 요약본 세팅
+            const modalTextarea = document.getElementById('modalReportPreviewText');
+            if (modalTextarea) {
+                modalTextarea.value = formattedReportText;
+            }
+
+            // 문진 완료 즉시 클립보드에 자동 복사 시도 후 카톡 채널 이동 모달 오픈
+            await copyTextRobust(formattedReportText);
             openKakaoSendModal();
         }
 
@@ -2332,19 +2338,140 @@ ${ccdrResult.abnormalItems.length > 0 ? `• 체크항목: ${ccdrResult.abnormal
 • 수의사 전달사항: ${memo}`;
         }
 
-        // 클립보드 복사 함수
-        function copyReportToClipboard() {
-            copyTextHelper(formattedReportText, "문진 요약 내용이 복사되었습니다! 병원 카카오톡이나 문자에 붙여넣기 해주세요.");
+        // ================= 카카오톡 인앱 브라우저 완벽 대응 복사 & 공유 로직 =================
+        // 1. 최신 Clipboard API + iOS/Android WebView Fallback 결합 복사 함수
+        async function copyTextRobust(textToCopy) {
+            if (!textToCopy) return false;
+
+            // 방법 A: 최신 navigator.clipboard API 시도 (HTTPS 및 최신 인앱 브라우저 지원)
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    return true;
+                } catch (err) {
+                    // 실패 시 방법 B로 즉시 폴백
+                }
+            }
+
+            // 방법 B: iOS/Android 카카오톡 인앱 브라우저 호환 textarea 선택 복사
+            try {
+                const tempTextArea = document.createElement("textarea");
+                tempTextArea.value = textToCopy;
+                tempTextArea.setAttribute("readonly", "");
+                tempTextArea.style.position = "fixed";
+                tempTextArea.style.top = "0";
+                tempTextArea.style.left = "0";
+                tempTextArea.style.width = "2em";
+                tempTextArea.style.height = "2em";
+                tempTextArea.style.padding = "0";
+                tempTextArea.style.border = "none";
+                tempTextArea.style.outline = "none";
+                tempTextArea.style.boxShadow = "none";
+                tempTextArea.style.background = "transparent";
+                tempTextArea.style.opacity = "0.01";
+                document.body.appendChild(tempTextArea);
+
+                // iOS Safari / KakaoTalk WebView 전용 Range 선택 처리
+                const isIOS = /ipad|iphone|ipod/i.test(navigator.userAgent);
+                if (isIOS) {
+                    const range = document.createRange();
+                    range.selectNodeContents(tempTextArea);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    tempTextArea.setSelectionRange(0, 999999);
+                } else {
+                    tempTextArea.focus();
+                    tempTextArea.select();
+                }
+
+                const successful = document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                return successful;
+            } catch (err) {
+                return false;
+            }
         }
 
-        // 카톡 채널로 바로 전송 (복사 + 카톡 채팅방 새창 열기)
+        // 2. 모달 내 텍스트박스에서 직접 복사 버튼 클릭 시
+        async function copyFromModalTextarea() {
+            const modalTextarea = document.getElementById('modalReportPreviewText');
+            const ok = await copyTextRobust(formattedReportText);
+            if (modalTextarea) {
+                modalTextarea.focus();
+                modalTextarea.select();
+                try { document.execCommand('copy'); } catch (e) {}
+            }
+            const badge = document.getElementById('modalCopyStatusBadge');
+            if (badge) {
+                badge.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i>문진표 복사 완료! 이제 카톡방에 붙여넣기 하세요`;
+                badge.className = "inline-block px-3 py-1 rounded-full bg-teal-600 text-white text-xs font-extrabold";
+            }
+            showToast("문진표 내용이 복사되었습니다! 카톡 채팅방에 붙여넣기 해주세요.");
+        }
+
+        // 3. [핵심] 사용자 터치 이벤트 내에서 즉시 복사 확정 후 카톡 채널 채팅방 열기
+        async function copyAndOpenKakaoChannel() {
+            // 1) 사용자 클릭 제스처 안에서 즉시 복사 실행 (카톡 인앱 브라우저 차단 우회)
+            await copyTextRobust(formattedReportText);
+
+            const modalTextarea = document.getElementById('modalReportPreviewText');
+            if (modalTextarea && ! document.getElementById('kakaoSendModal').classList.contains('hidden')) {
+                modalTextarea.focus();
+                modalTextarea.select();
+                try { document.execCommand('copy'); } catch (e) {}
+            }
+
+            showToast("문진 내용이 복사되었습니다! 열리는 카톡방에 '붙여넣기' 해주세요.");
+            closeKakaoSendModal();
+
+            // 2) 카톡 인앱 브라우저에서는 window.open(_blank)이 막히거나 복사가 초기화될 수 있으므로
+            //    약간의 딜레이 후 현재 창 이동(location.href)으로 카카오톡 앱 채팅방을 직접 호출
+            setTimeout(() => {
+                window.location.href = KAKAO_CHANNEL_CHAT_URL;
+            }, 250);
+        }
+
+        // 4. 스마트폰 기본 공유하기(Web Share API) - 복사 없이도 카톡/문자로 즉시 전달 가능
+        async function shareViaMobileSheet() {
+            await copyTextRobust(formattedReportText);
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: '다산마리동물병원 건강검진 사전 문진표',
+                        text: formattedReportText
+                    });
+                    showToast("공유 창이 열렸습니다. 카카오톡이나 문자를 선택해 전송해주세요!");
+                    return;
+                } catch (err) {
+                    // 사용자가 공유 창을 닫은 경우
+                }
+            } else {
+                showToast("문진표 내용이 복사되었습니다! 카톡 채팅창에 붙여넣기 해주세요.");
+            }
+        }
+
+        // 일반 클립보드 복사 버튼
+        async function copyReportToClipboard() {
+            const ok = await copyTextRobust(formattedReportText);
+            if (ok) {
+                showToast("문진 요약 내용이 복사되었습니다! 병원 카카오톡이나 문자에 붙여넣기 해주세요.");
+            } else {
+                openKakaoSendModal();
+                showToast("상단 텍스트 박스를 길게 눌러 전체 선택 후 복사해주세요.");
+            }
+        }
+
+        // 하위 호환용 함수
         function sendToKakaoChannel() {
-            copyTextSilent(formattedReportText);
-            showToast("문진 내용이 복사되었습니다! 열리는 카톡 채팅창에 붙여넣기 해주세요.");
-            window.open(KAKAO_CHANNEL_CHAT_URL, '_blank');
+            copyAndOpenKakaoChannel();
         }
 
         function openKakaoSendModal() {
+            const modalTextarea = document.getElementById('modalReportPreviewText');
+            if (modalTextarea && formattedReportText) {
+                modalTextarea.value = formattedReportText;
+            }
             const modal = document.getElementById('kakaoSendModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -2356,41 +2483,10 @@ ${ccdrResult.abnormalItems.length > 0 ? `• 체크항목: ${ccdrResult.abnormal
             modal.classList.remove('flex');
         }
 
-        function copyTextSilent(textToCopy) {
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = textToCopy;
-            tempTextArea.style.position = "fixed";
-            tempTextArea.style.left = "-9999px";
-            document.body.appendChild(tempTextArea);
-            tempTextArea.focus();
-            tempTextArea.select();
-            try {
-                document.execCommand('copy');
-            } catch (err) {}
-            document.body.removeChild(tempTextArea);
-        }
-
-        function copyKakaoTemplate() {
+        async function copyKakaoTemplate() {
             const text = document.getElementById('kakaoTemplateText').innerText;
-            copyTextHelper(text, "보호자 발송용 안내 문구가 복사되었습니다.");
-        }
-
-        function copyTextHelper(textToCopy, successMessage) {
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = textToCopy;
-            tempTextArea.style.position = "fixed";
-            tempTextArea.style.left = "-9999px";
-            document.body.appendChild(tempTextArea);
-            tempTextArea.focus();
-            tempTextArea.select();
-
-            try {
-                document.execCommand('copy');
-                showToast(successMessage);
-            } catch (err) {
-                showToast("복사에 실패했습니다. 화면의 내용을 직접 선택하여 복사해주세요.");
-            }
-            document.body.removeChild(tempTextArea);
+            await copyTextRobust(text);
+            showToast("보호자 발송용 안내 문구가 복사되었습니다.");
         }
 
         // 문진표 다시 수정하기
