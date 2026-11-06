@@ -112,8 +112,8 @@
                 </div>
             </div>
             <!-- 종 변경 버튼 (문진 작성 중에만 표시) -->
-            <button type="button" id="changeSpeciesBtn" onclick="backToSpeciesSelect()" class="hidden px-3 py-1.5 rounded-xl bg-mari-mintLight border border-mari-mintBorder text-mari-navy hover:bg-amber-100/60 text-xs font-bold transition items-center gap-1.5">
-                <i class="fa-solid fa-repeat text-mari-mint"></i> <span id="currentSpeciesBadge">강아지</span> 변경
+            <button type="button" id="changeSpeciesBtn" onclick="toggleOppositeSpecies()" class="hidden px-3 py-1.5 rounded-xl bg-mari-mintLight border border-mari-mintBorder text-mari-navy hover:bg-amber-100/60 text-xs font-bold transition items-center gap-1.5">
+                <i class="fa-solid fa-repeat text-mari-mint"></i> <span id="currentSpeciesBadge">고양이로 변경</span>
             </button>
         </div>
     </header>
@@ -1689,14 +1689,22 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // 상단 우측 버튼 클릭 시 반대 종(강아지 <-> 고양이)으로 즉시 전환
+        function toggleOppositeSpecies() {
+            const targetSpecies = selectedSpecies === 'dog' ? 'cat' : 'dog';
+            selectSpecies(targetSpecies);
+            const targetName = targetSpecies === 'dog' ? '강아지' : '고양이';
+            showToast(`${targetName} 건강검진 문진표로 변경되었습니다.`);
+        }
+
         // 강아지/고양이 맞춤 문항 및 UI 렌더링
         function applySpeciesTemplate(species) {
             const cfg = speciesConfig[species];
             if (!cfg) return;
 
-            // 헤더 및 배너 업데이트
+            // 헤더 및 배너 업데이트 (강아지일 땐 '고양이로 변경', 고양이일 땐 '강아지로 변경' 표시)
             document.getElementById('headerAnimalIcon').className = `fa-solid ${cfg.badgeIcon} text-xl`;
-            document.getElementById('currentSpeciesBadge').textContent = cfg.name;
+            document.getElementById('currentSpeciesBadge').textContent = species === 'dog' ? '고양이로 변경' : '강아지로 변경';
             document.getElementById('bannerSpeciesIcon').className = `fa-solid ${cfg.badgeIcon}`;
             document.getElementById('bannerSpeciesTag').textContent = cfg.bannerTag;
             document.getElementById('bannerMainTitle').textContent = cfg.bannerTitle;
