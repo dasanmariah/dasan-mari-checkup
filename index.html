@@ -245,14 +245,41 @@
                             <p class="text-xs text-slate-400 mt-1.5"><i class="fa-solid fa-circle-check text-mari-mint mr-1"></i>다산마리동물병원 전자차트(EMR)와 대조하여 환자 정보를 확인합니다.</p>
                         </div>
 
-                        <div class="pt-2 border-t border-slate-100">
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5">
-                                건강검진 결과 받으실 이메일 주소 <span class="text-rose-500">*</span>
-                            </label>
-                            <input type="email" id="guardianEmail" required placeholder="예: mari_love@naver.com" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:border-mari-mint focus:ring-2 focus:ring-mari-mint/20 outline-none transition text-sm">
-                            <p class="text-xs text-mari-mint font-medium mt-1.5">
-                                <i class="fa-solid fa-envelope-open-text mr-1"></i>추후 건강검진 완료 후 정밀 결과 리포트를 발송해드릴 필수 이메일 주소입니다.
-                            </p>
+                        <div class="pt-3 border-t border-slate-100 space-y-3">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">
+                                    추후 건강검진 결과지 수령 방법 선택 <span class="text-rose-500">*</span>
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                    <label class="check-card cursor-pointer">
+                                        <input type="radio" name="reportDeliveryMethod" value="카카오톡으로 받기" checked onchange="toggleReportDeliveryMethod()" class="sr-only">
+                                        <div class="p-3.5 rounded-xl border border-slate-200 text-sm font-bold flex items-center gap-2.5 transition">
+                                            <span class="check-icon w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                                            <i class="fa-solid fa-comment text-amber-500"></i>
+                                            <span>카카오톡으로 받기</span>
+                                        </div>
+                                    </label>
+                                    <label class="check-card cursor-pointer">
+                                        <input type="radio" name="reportDeliveryMethod" value="이메일로 받기" onchange="toggleReportDeliveryMethod()" class="sr-only">
+                                        <div class="p-3.5 rounded-xl border border-slate-200 text-sm font-bold flex items-center gap-2.5 transition">
+                                            <span class="check-icon w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                                            <i class="fa-solid fa-envelope text-mari-mint"></i>
+                                            <span>이메일로 받기</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 이메일로 받기 선택 시에만 표시되는 입력란 -->
+                            <div id="guardianEmailWrap" class="hidden bg-mari-mintLight/70 p-4 rounded-2xl border border-mari-mintBorder space-y-1.5 animate-[fadeIn_0.2s_ease-in-out]">
+                                <label class="block text-sm font-bold text-mari-navy">
+                                    건강검진 결과 받으실 이메일 주소 <span class="text-rose-500">*</span>
+                                </label>
+                                <input type="email" id="guardianEmail" placeholder="예: mari_love@naver.com" class="w-full px-4 py-3 rounded-xl border border-mari-mintBorder bg-white focus:border-mari-mint focus:ring-2 focus:ring-mari-mint/20 outline-none transition text-sm">
+                                <p class="text-xs text-mari-mint font-medium">
+                                    <i class="fa-solid fa-envelope-open-text mr-1"></i>추후 건강검진 완료 후 정밀 결과 리포트를 발송해드릴 이메일 주소입니다.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -741,7 +768,7 @@
                             <input type="checkbox" name="essentialNotice" onchange="updateNoticeProgress()" class="sr-only">
                             <div class="p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium flex items-start gap-3 transition leading-relaxed">
                                 <span class="check-icon w-5 h-5 rounded border border-slate-300 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>
-                                <span>건강검진 결과지는 검사일 기준 일주일 이내 작성해주신 이메일로 보내드립니다.</span>
+                                <span>건강검진 결과지는 검사일 기준 일주일 이내 선택해주신 수령 방법(카카오톡 또는 이메일)으로 보내드립니다.</span>
                             </div>
                         </label>
                     </div>
@@ -835,13 +862,24 @@
                         </span>
                         <h2 class="text-xl font-bold">다산마리동물병원 카카오톡 채널로 전송해주세요</h2>
                         <p class="text-xs sm:text-sm text-amber-100/90 mt-1 leading-relaxed">
-                            문진표 요약 내용이 <strong>이미 복사되었습니다!</strong> 아래 노란색 <strong>[병원 카톡 채널 채팅방 열기]</strong> 버튼을 누르신 후, 카톡 대화창에 <strong>'붙여넣기'</strong> 하여 전송해주시면 접수가 완료됩니다.
+                            문진표 요약 내용이 <strong>이미 복사되었습니다!</strong> 아래 노란색 버튼을 누르신 후, 카톡 대화창에 <strong>'붙여넣기'</strong> 하시고 반드시 우측의 <strong>노란색 [전송(종이비행기)] 버튼</strong>까지 눌러주셔야 병원으로 전달됩니다!
                         </p>
                     </div>
                 </div>
 
+                <!-- 미전송 방지 강력 리마인드 배너 -->
+                <div class="mt-4 bg-rose-500/20 border-2 border-rose-400/80 rounded-xl p-3.5 flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center shrink-0 mt-0.5 font-extrabold">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="text-xs sm:text-sm text-white leading-snug">
+                        <p class="font-extrabold text-amber-300">⚠️ 잠깐! 카톡 입력칸에 글자만 붙여넣고 나가시면 병원에 도착하지 않습니다!</p>
+                        <p class="text-amber-50/95 mt-0.5">대화창에 붙여넣기 하신 뒤, <strong>카톡 입력창 오른쪽의 노란색 [전송 ✈️] 버튼을 꼭 한 번 더 눌러</strong> 말풍선으로 올라간 것을 확인해주세요.</p>
+                    </div>
+                </div>
+
                 <!-- 공유 및 출력 버튼 그룹 -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-5 pt-4 border-t border-amber-900/60">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-4 pt-4 border-t border-amber-900/60">
                     <button type="button" onclick="copyAndReturnToKakaoChat()" class="py-3.5 px-4 rounded-xl bg-[#FEE500] hover:bg-[#FDD800] text-[#3C1E1E] font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md">
                         <i class="fa-solid fa-comment text-base"></i> 문진 복사 후 카톡방으로 돌아가기
                     </button>
@@ -882,7 +920,7 @@
                         </div>
                     </div>
                     <div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-right">
-                        <span class="text-[11px] text-slate-400 block">결과지 발송 이메일</span>
+                        <span class="text-[11px] text-slate-400 block">결과지 수령 방법</span>
                         <span id="repEmailHeader" class="text-sm font-bold text-mari-navy">-</span>
                     </div>
                 </div>
@@ -909,7 +947,7 @@
                                 <span id="repGuardianPhone" class="font-bold text-slate-800 text-base">-</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-400 block">검진 결과 수령 이메일</span>
+                                <span class="text-xs text-slate-400 block">검진 결과지 수령처</span>
                                 <span id="repGuardianEmail" class="font-bold text-mari-mint text-base break-all">-</span>
                             </div>
                         </div>
@@ -1043,10 +1081,32 @@
                 <span id="modalCopyStatusBadge" class="inline-block px-3 py-1 rounded-full bg-mari-mintLight text-mari-mint text-xs font-extrabold border border-mari-mintBorder">
                     <i class="fa-solid fa-check mr-1"></i>작성 완료! 카톡 전송 준비됨
                 </span>
-                <h3 class="text-lg sm:text-xl font-extrabold text-mari-navy">아래 노란 버튼을 누르면 복사 후 카톡방으로 돌아갑니다!</h3>
+                <h3 class="text-lg sm:text-xl font-extrabold text-mari-navy">카톡방에서 꼭 [전송] 버튼까지 눌러주세요!</h3>
                 <p id="modalSubGuideText" class="text-xs text-slate-600 leading-relaxed">
-                    병원 카톡 채팅방에서 이 링크를 여셨다면, 아래 노란 버튼을 누르실 때 <strong>문진 내용이 즉시 복사되면서 현재 창이 닫히고 병원 채팅방으로 바로 돌아갑니다.</strong>
+                    아래 노란 버튼을 누르면 <strong>문진 내용이 복사되면서 병원 카톡 채팅방으로 돌아갑니다.</strong>
                 </p>
+            </div>
+
+            <!-- 보호자 오해 방지용: 카톡 입력창 붙여넣기 후 [전송] 버튼 리마인드 시각 가이드 -->
+            <div class="bg-rose-50 border-2 border-rose-300 rounded-2xl p-3.5 text-left space-y-2 shadow-sm">
+                <div class="flex items-center gap-1.5 text-rose-700 font-extrabold text-xs sm:text-sm">
+                    <i class="fa-solid fa-bell animate-bounce"></i>
+                    <span>가장 많이 하시는 실수! 꼭 확인해주세요</span>
+                </div>
+                <p class="text-xs text-slate-700 leading-relaxed">
+                    카톡 채팅창 입력칸에 문진표가 적혀만 있고 <strong>우측 [전송] 버튼을 누르지 않으시면 병원에 전달되지 않습니다!</strong>
+                </p>
+                <!-- 카톡 입력창 모식도 가이드 -->
+                <div class="bg-white rounded-xl p-2.5 border border-rose-200 flex items-center justify-between gap-2">
+                    <div class="text-[11px] text-slate-500 truncate bg-slate-100 px-2.5 py-1.5 rounded-lg flex-grow font-medium">
+                        1. 입력창 길게 눌러 <strong>'붙여넣기'</strong>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-slate-400 text-xs shrink-0"></i>
+                    <div class="bg-[#FEE500] text-[#3C1E1E] px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold flex items-center gap-1 shrink-0 shadow-sm border border-amber-400">
+                        <span>2. 전송 클릭!</span>
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </div>
+                </div>
             </div>
 
             <!-- 카톡 인앱 브라우저에서도 수동/자동 복사가 모두 가능하도록 미리보기 텍스트 박스 제공 -->
@@ -1057,14 +1117,14 @@
                         <i class="fa-regular fa-copy mr-1"></i>내용만 복사하기
                     </button>
                 </div>
-                <textarea id="modalReportPreviewText" readonly onclick="this.focus(); this.select();" rows="4" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-700 font-mono leading-snug focus:border-mari-mint outline-none resize-none"></textarea>
+                <textarea id="modalReportPreviewText" readonly onclick="this.focus(); this.select();" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-700 font-mono leading-snug focus:border-mari-mint outline-none resize-none"></textarea>
             </div>
 
             <div class="bg-mari-mintLight/80 rounded-2xl p-3 border border-mari-mintBorder text-left text-xs text-mari-navy space-y-1">
-                <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-lightbulb text-mari-mint"></i> 카톡 채팅방에서 전송하는 방법</div>
-                <p class="text-slate-600">1. 아래 노란색 <strong>[문진 복사 후 카톡 채팅방으로 이동]</strong> 버튼 터치</p>
-                <p class="text-slate-600">2. 창이 닫히며 나타나는 병원 카톡방 입력창에 <strong>'붙여넣기'</strong> 후 전송!</p>
-                <p class="text-[11px] text-mari-mint font-semibold pt-0.5">* 만약 창이 자동으로 안 닫히면 우측 상단(또는 좌측 상단) <strong>[X 닫기]</strong>를 눌러 채팅방에 붙여넣기 해주세요.</p>
+                <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-lightbulb text-mari-mint"></i> 카톡 채팅방에서 전송하는 3단계 순서</div>
+                <p class="text-slate-600">1. 아래 노란색 <strong>[문진 복사 후 카톡 채팅방으로 돌아가기]</strong> 터치</p>
+                <p class="text-slate-600">2. 병원 카톡 대화 입력창을 길게 눌러 <strong>[붙여넣기]</strong> 선택</p>
+                <p class="text-rose-700 font-extrabold">3. 입력창 오른쪽의 노란색 <strong>[전송(종이비행기) ✈️] 버튼</strong>을 꼭 터치하여 말풍선으로 보내기!</p>
             </div>
 
             <div class="space-y-2 pt-1">
@@ -1956,6 +2016,23 @@
             }
         }
 
+        // Step 1: 결과지 수령 방법 (카카오톡 vs 이메일) 전환 시 이메일 입력란 표시/숨김
+        function toggleReportDeliveryMethod() {
+            const method = document.querySelector('input[name="reportDeliveryMethod"]:checked')?.value || '카카오톡으로 받기';
+            const emailWrap = document.getElementById('guardianEmailWrap');
+            const emailInput = document.getElementById('guardianEmail');
+            if (!emailWrap || !emailInput) return;
+
+            if (method === '이메일로 받기') {
+                emailWrap.classList.remove('hidden');
+                emailInput.required = true;
+                emailInput.focus();
+            } else {
+                emailWrap.classList.add('hidden');
+                emailInput.required = false;
+            }
+        }
+
         // 단계 이동 함수 (이전/다음)
         function changeStep(direction) {
             if (direction === 1 && !validateCurrentStep()) {
@@ -1993,15 +2070,24 @@
             if (currentStep === 1) {
                 const pName = document.getElementById('petName').value.trim();
                 const gPhone = document.getElementById('guardianPhone').value.trim();
+                const deliveryMethod = document.querySelector('input[name="reportDeliveryMethod"]:checked')?.value || '카카오톡으로 받기';
                 const gEmail = document.getElementById('guardianEmail').value.trim();
 
-                if (!pName || !gPhone || !gEmail) {
-                    showToast("반려동물 이름, 병원 등록 연락처, 결과 받으실 이메일 주소를 모두 입력해주세요.");
+                if (!pName || !gPhone) {
+                    showToast("반려동물 이름과 병원 등록 연락처를 모두 입력해주세요.");
                     return false;
                 }
-                if (!gEmail.includes('@')) {
-                    showToast("올바른 이메일 주소 형식을 입력해주세요.");
-                    return false;
+                if (deliveryMethod === '이메일로 받기') {
+                    if (!gEmail) {
+                        showToast("이메일로 결과지 수령을 선택하셨습니다. 받으실 이메일 주소를 입력해주세요.");
+                        document.getElementById('guardianEmail').focus();
+                        return false;
+                    }
+                    if (!gEmail.includes('@')) {
+                        showToast("올바른 이메일 주소 형식을 입력해주세요.");
+                        document.getElementById('guardianEmail').focus();
+                        return false;
+                    }
                 }
             }
             if (currentStep === 6) {
@@ -2132,7 +2218,11 @@
             // Step 1: 3대 필수 정보
             const pName = document.getElementById('petName').value.trim();
             const gPhone = document.getElementById('guardianPhone').value.trim();
-            const gEmail = document.getElementById('guardianEmail').value.trim();
+            const deliveryMethod = document.querySelector('input[name="reportDeliveryMethod"]:checked')?.value || '카카오톡으로 받기';
+            const gEmailRaw = document.getElementById('guardianEmail').value.trim();
+            const deliveryDisplay = deliveryMethod === '이메일로 받기'
+                ? `이메일 수령 (${gEmailRaw || '미기재'})`
+                : '카카오톡으로 받기';
 
             // Step 2: 식이, 주식 사료 브랜드, 별도 간식/식단, 음수, 배변 ('기타' 수기 입력값 병합)
             let dietTypes = getCheckedValues('dietType');
@@ -2223,10 +2313,10 @@
 
             // 기본 정보 바인딩
             document.getElementById('repPetName').textContent = `${pName} (${speciesKr})`;
-            document.getElementById('repEmailHeader').textContent = gEmail;
+            document.getElementById('repEmailHeader').textContent = deliveryDisplay;
             document.getElementById('repPetProfile').textContent = `${pName} (${speciesKr})`;
             document.getElementById('repGuardianPhone').textContent = gPhone;
-            document.getElementById('repGuardianEmail').textContent = gEmail;
+            document.getElementById('repGuardianEmail').textContent = deliveryDisplay;
 
             // 식이/배변 바인딩
             document.getElementById('repDiet').textContent = `${dietTypes.length ? dietTypes.join(', ') : '미기재'} (사료명: ${mainFoodBrand})`;
@@ -2327,11 +2417,11 @@
                 `;
             }
 
-            // 카카오톡/문자 전송용 텍스트 포맷 생성
+            // 카카오톡/문자 전송용 텍스트 포맷 생성 (맨 아랫줄에 카톡 입력창 내 미전송 방지 안내문 포함)
             formattedReportText = `[다산마리동물병원 ${speciesKr} 건강검진 사전 문진표]
 ■ 반려동물 이름: ${pName} (${speciesKr})
 ■ 등록 연락처: ${gPhone}
-■ 결과 수령 이메일: ${gEmail}
+■ 결과지 수령 방법: ${deliveryDisplay}
 
 [중점 확인 이상 증상 (${allWarnings.length}건)]
 ${allWarnings.length > 0 ? allWarnings.map(w => `• ${w}`).join('\n') : '• 특이 이상 증상 없음'}
@@ -2357,7 +2447,11 @@ ${ccdrResult.abnormalItems.length > 0 ? `• 세부항목: ${ccdrResult.abnormal
 
 [기타 (검진 알람 신청 및 수의사에게 전할 말씀)]
 • 다음 건강검진 알람 신청: ${reminder}
-• 수의사 전달사항: ${memo}`;
+• 수의사 전달사항: ${memo}
+
+----------------------------------
+⚠️ [보호자님 필수 확인]
+아직 전송된 것이 아닙니다! 지금 입력칸 우측의 노란색 [전송(종이비행기)] 버튼을 꼭 한번 더 눌러주셔야 병원으로 전달됩니다!`;
         }
 
         // ================= 카카오톡 인앱 브라우저 완벽 대응 복사 & 창 닫기(복귀) 로직 =================
@@ -2445,7 +2539,7 @@ ${ccdrResult.abnormalItems.length > 0 ? `• 세부항목: ${ccdrResult.abnormal
 
             const badge = document.getElementById('modalCopyStatusBadge');
             if (badge) {
-                badge.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i>복사 완료! 카톡 대화창에 '붙여넣기' 해주세요!`;
+                badge.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i>복사 완료! 붙여넣기 후 꼭 우측 [전송] 버튼을 눌러주세요!`;
                 badge.className = "inline-block px-3 py-1 rounded-full bg-teal-600 text-white text-xs font-extrabold";
             }
 
@@ -2454,17 +2548,17 @@ ${ccdrResult.abnormalItems.length > 0 ? `• 세부항목: ${ccdrResult.abnormal
             //    따라서 카톡 인앱 브라우저 닫기 스킴(kakaotalk://inappbrowser/close)을 호출하여
             //    웹창을 자동으로 닫고 원래 있던 병원 카톡 채팅방으로 즉시 복귀시킵니다!
             if (isKakaoInAppBrowser()) {
-                showToast("문진표가 복사되었습니다! 창이 닫히면 채팅방에 '붙여넣기' 해주세요.");
+                showToast("복사 완료! 채팅창에 '붙여넣기' 하신 뒤 반드시 우측 노란색 [전송] 버튼까지 꼭 눌러주세요!");
                 setTimeout(() => {
                     // 카톡 인앱 브라우저 자동 닫기 공식 스킴 실행 (창이 닫히면서 바로 뒤의 병원 카톡방이 나타남)
                     window.location.href = "kakaotalk://inappbrowser/close";
-                }, 350);
+                }, 450);
             } else {
                 // 문자메시지, 사파리, 크롬 등 카톡 밖에서 열었을 때는 다산마리동물병원 카톡 채널 채팅방으로 연결
-                showToast("문진표가 복사되었습니다! 열리는 병원 카톡방에 '붙여넣기' 해주세요.");
+                showToast("복사 완료! 열리는 카톡방에 '붙여넣기' 후 우측 노란색 [전송] 버튼을 꼭 눌러주세요!");
                 setTimeout(() => {
                     window.location.href = KAKAO_CHANNEL_CHAT_URL;
-                }, 300);
+                }, 350);
             }
         }
 
